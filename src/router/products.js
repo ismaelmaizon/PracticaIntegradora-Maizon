@@ -13,7 +13,7 @@ const environment = async ()=>{
 
     const info = await fs.promises.readFile(path, 'utf-8')
     const productsRes = JSON.parse(info);
-    console.log(productsRes); 
+    //console.log(productsRes); 
     await mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority')
     //products.push(productsRes)
     //console.log('***************************************************************');
@@ -34,7 +34,10 @@ environment()
 router.get('/',  async (req, res) => {
    // if (fs.existsSync(path)) {
         const limite = req.query.limit
+        console.log('con limit ***************************************');
+        console.log(limite);
         const products = await productsModel.find()
+        console.log(products);
         //const products = JSON.parse(info);
         if (limite === undefined) {
             res.send({products})
@@ -43,6 +46,7 @@ router.get('/',  async (req, res) => {
             products.map( pr => {
                 if (pr.id <= limite) { productsLimit.push(pr) }
             } )
+            console.log(productsLimit);
             res.send({productsLimit})
         }
 
