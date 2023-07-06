@@ -1,60 +1,57 @@
 import { Router} from "express";
 import fs from 'fs';
+import cartsModel from "../models/cart.model.js";
+import mongoose from "mongoose";
+
 
 
 const router = Router();
 const path = './src/file/carts.json';
 
-const pathProducts = './src/file/products.json';
+const environment = async ()=>{
 
+    //const info = await fs.promises.readFile(path, 'utf-8')
+    //const cartsRes = JSON.parse(info);
+    //console.log(productsRes); 
+    await mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority')
+    //products.push(productsRes)
+    //console.log('***************************************************************');
+    //console.log(products);
+    //await cartsModel.insertMany(cartsRes)
+    let response = await cartsModel.find()
+    //let response1 = await productsModel.find().explain('executionStats')//first query
+    //let response = await userModel.find({first_name: 'Celia'}).explain('executionStats')//first query
+    console.log(response);
+    //console.log(response1);
+    console.log('listo')
+}
+
+environment()
+
+router.get('/',  async (req, res) => {
+    
+    const carts = await cartsModel.find()
+    
+    res.send(carts)
+})
 
 router.get('/:cid',  async (req, res) => {
-    
-    if (fs.existsSync(path)) {
-        const id = req.params.cid
-        const info = await fs.promises.readFile(path, 'utf-8')
-        const carts = JSON.parse(info);
-        const cartId = carts.find((pr) => pr.id == id)
-        console.log(cartId);
-        if (cartId != undefined) {
-            res.send(cartId)
-        }else {
-            res.send({status: 'el archivo con ese ID no se encontro'})
 
-        }
-    }else {
-        res.send({status: 'el archivo no tiene informacion'})
-    }
+    const cid = req.params.cid
+    const cart = await cartsModel.find({_id: cid})
+    
+    res.send(cart)
 })
 
 
 router.post('/', async (req, res) => {
-    if ( fs.existsSync(path)) {
-        console.log();
-        const info = await fs.promises.readFile(path, 'utf-8')
-        const carts = JSON.parse(info);
-        if ( carts.length === 0  ) {
-            carts.push({
-                "id" : 1,
-                "products" : []
-            })
-        }else {
-            carts.push({
-                "id" : parseInt(carts[carts.length - 1].id + 1),
-                "products" : []
-            })
-        }
+    const cart = req.body
+    await cartsModel.insertMany(cart)
 
-        await fs.promises.writeFile(path, JSON.stringify(carts, null, '\t'));
-        res.send({status: 'creacion de carrito'})
-
-    }else{
-        await fs.promises.writeFile(path, JSON.stringify([], null, '\t'));
-        res.send({status: 'intente de nuevo'})
-    }
+    res.send({status: 'success'})
 })
 
-
+/*
 router.post('/:cid/product/:pid',  async (req, res) => {
     const idCart = req.params.cid;
     const idProduct = req.params.pid;
@@ -114,5 +111,5 @@ router.post('/:cid/product/:pid',  async (req, res) => {
 
 } )
 
-
+*/
 export default router;

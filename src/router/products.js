@@ -32,35 +32,27 @@ environment()
 
 
 router.get('/',  async (req, res) => {
-   // if (fs.existsSync(path)) {
-        const limite = req.query.limit
-        console.log('con limit ***************************************');
-        console.log(limite);
-        const products = await productsModel.find()
-        console.log(products);
-        //const products = JSON.parse(info);
-        if (limite === undefined) {
-            res.send({products})
-        } else {
-            const productsLimit = []
-            products.map( pr => {
-                if (pr.id <= limite) { productsLimit.push(pr) }
-            } )
-            console.log(productsLimit);
-            res.send({productsLimit})
-        }
+    const limite = req.query.limit
+    console.log('con limit ***************************************');
+    console.log(limite);
+    const products = await productsModel.find()
+    console.log(products);
+    //const products = JSON.parse(info);
+    if (limite === undefined) {
+        res.send({products})
+    } else {
+        const productsLimit = []
+        products.map( pr => {
+            if (pr.id <= limite) { productsLimit.push(pr) }
+        } )
+        console.log(productsLimit);
+        res.send({productsLimit})
+    }
 
-   // }else {
-   //     res.send({status: 'el archivo no tiene informacion'})
-   // }
 })
 
 router.get('/:pid',  async (req, res) => {
-//if (fs.existsSync(path)) {
-   /* const id = req.params.pid
-    const info = await productsModel.find()
-    const products = JSON.parse(info);
-    const product = products.find((pr) => pr.id == id)*/
+
     const id = req.params.pid
     const product = await productsModel.find( { _id : id } )
     if (product != undefined) {
@@ -68,9 +60,7 @@ router.get('/:pid',  async (req, res) => {
     }else {
         res.send({status: 'el archivo con ese ID no se encontro'})
     }
-//}else {
-//    res.send({status: 'el archivo no tiene informacion'})
-//}
+
 })
 
 router.post('/',  async (req, res) => {
@@ -82,75 +72,34 @@ router.post('/',  async (req, res) => {
 } )
 
 
-// router.put('/:pid', async(req, res) => {
-//     const product = req.body;
-//     const pid = parseInt(req.params.pid);
-//     console.log(pid);
-//     let variable = false;
+router.put('/:pid', async(req, res) => {
+    const product = req.body;
+    const pid = req.params.pid;
+    let variable = false;
 
-//     if (fs.existsSync(path)) {
-//         const info = await fs.promises.readFile(path, 'utf-8')
-//         const products = JSON.parse(info);
+    await productsModel.updateOne({"_id": pid}, 
+    {$set : { 
+        "title": product.title, 
+        "description": product.description,
+        "code": product.code,
+        "price": product.price,
+        "status": product.status,
+        "stock": product.stock,
+        "category": product.category 
+    } } )    
+    
+    res.send({status: 'success'});
 
-//         products.map((p) =>{
-//             if (p.id === pid) {
-//                 variable = true;
-
-//                 p.title = product.title
-//                 p.description = product.description
-//                 p.code = product.code
-//                 p.price = product.price
-//                 p.status = product.status
-//                 p.stock = product.stock
-//                 p.category = product.category
-//             }
-//         })
-
-//         if(variable) {
-//             console.log(products);
-//             await fs.promises.writeFile(path, JSON.stringify(products, null, '\t'))
-//             res.send({status: 'success'});
-//         }else {
-//             res.send({status: 'no se encontro producto con ese ID'});
-//         }
+})
 
 
-//     }else {
-//         res.send({status: 'no se encontro archivo json, intente de nuevo'}) 
-//     }
-// })
+router.delete('/:pid', async(req, res) => {
+    const pid = req.params.pid;
+    console.log(pid);
 
-
-// router.delete('/:pid', async(req, res) => {
-//     const pid = parseInt(req.params.pid);
-//     console.log(pid);
-//     let variable = false;
-
-//     if (fs.existsSync(path)) {
-//         const info = await fs.promises.readFile(path, 'utf-8')
-//         const products = JSON.parse(info);
-        
-//         products.map((p) =>{
-//             if (p.id === pid) {
-//                 variable = true;
-//             }
-//         })
-
-//         if(variable) {
-//             console.log(products);
-//             products.splice(pid - 1, 1);
-//             console.log('eliminacion ****');
-//             console.log(products);
-//             await fs.promises.writeFile(path, JSON.stringify(products, null, '\t'))
-//             res.send({status: 'success'});
-//         }else {
-//             res.send({status: 'no se encontro producto con ese ID'});
-//         }
-        
-//     }else {
-//         res.send({status: 'no se encontro archivo json, intente de nuevo'}) 
-//     }
-// }
-// )
+    await productsModel.deleteOne({"_id": pid})
+    res.send({status: 'elemento eliminado'});
+    
+})
 
 export default router;
