@@ -22,7 +22,7 @@ const environment = async ()=>{
     let response = await productsModel.find()
     //let response1 = await productsModel.find().explain('executionStats')//first query
     //let response = await userModel.find({first_name: 'Celia'}).explain('executionStats')//first query
-    console.log(response);
+    //console.log(response);
     //console.log(response1);
     console.log('listo')
  

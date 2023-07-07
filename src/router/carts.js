@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 
 
 
+
 const router = Router();
 const path = './src/file/carts.json';
 
@@ -21,7 +22,7 @@ const environment = async ()=>{
     let response = await cartsModel.find()
     //let response1 = await productsModel.find().explain('executionStats')//first query
     //let response = await userModel.find({first_name: 'Celia'}).explain('executionStats')//first query
-    console.log(response);
+    //console.log(response);
     //console.log(response1);
     console.log('listo')
 }
@@ -51,65 +52,83 @@ router.post('/', async (req, res) => {
     res.send({status: 'success'})
 })
 
-/*
+
 router.post('/:cid/product/:pid',  async (req, res) => {
     const idCart = req.params.cid;
     const idProduct = req.params.pid;
     console.log(idCart);
     console.log(idProduct);
 
-    if (fs.existsSync(path) && fs.existsSync(pathProducts )) {
 
-        const data = await fs.promises.readFile(pathProducts, 'utf-8')
-        const products = JSON.parse(data);
-        const info = await fs.promises.readFile(path, 'utf-8')
-        const carts = JSON.parse(info);
-        console.log(carts);
-        let producto = {
-            "product" : 0,
-            "quantity" : 1
-        }
-        console.log('antes: ');
-        console.log(carts);
-        carts.map((cart) => {
-            if (cart.id === parseInt(idCart)) {
-                let exists = true;
-                cart.products.map((prod) => {
+    const cartProducts = await cartsModel.find({'_id': idCart});
+    let exists = true;
 
-                    if (prod.product === parseInt(idProduct)) {
-                        exists = false;
-                        prod.quantity = prod.quantity + 1;
-                        
-                    }   
+    let prod = {  
+        'product' : idProduct,
+        'quantity' : 1
+    }
+    cartProducts.map((i) => {
+        console.log(i);
+        //console.log(i.id);
+        //console.log(i.products);
+    })
+    console.log(cartProducts[0].id);
+    console.log(cartProducts[0].products);
 
-                })
-                if (exists) {
-                    producto.product = parseInt(idProduct)
-                    producto.quantity = 1
-                    cart.products.push(producto) 
-                }
-            }
-        })
-        console.log('despues: ');
-        console.log(carts);
-        console.log(carts[1].products);
+    // REVISAR LA PRIMERA CONDICION DADO QUE NUNCA INGRESA AL IF
+    // PERO FUNCIONA APARENTEMENTE BIEN SIN LA PRIMERA CONDICION
+    
+    if (cartProducts[0].products === []) {
+        cartProducts[0].products.push(prod);
+        console.log('porst pushh');
+        console.log(cartProducts[0].products);
         
-        await fs.promises.writeFile(path, JSON.stringify(carts, null, '\t')); 
-        res.send({status: 'success'})
-        
+        await cartsModel.updateOne({'_id': idCart}, {$set: {
+            'products': cartProducts.products 
+        }})
+        res.send({status: 'prodcuto nuevo agregado'})
     }else {
-        const carts = [
-        {
-            "id" : 1,
-            "products" : []
+        console.log('dentro del else');
+        
+        cartProducts[0].products.map((prod) => {
+        
+            if (prod.product === idProduct) {
+                exists = false;
+                prod.quantity++;
+            }
+    
+        })
+
+        if(exists){
+            console.log('actualizando product');
+            cartProducts[0].products.push(prod);
+            await cartsModel.updateOne({'_id': idCart}, {$set: {
+                'products': cartProducts[0].products 
+            }})
+            res.send({status: 'prodcuto nuevo agregado'})
+        }else {
+            await cartsModel.updateOne({'_id': idCart}, {$set: {
+                'products': cartProducts[0].products 
+            }})
+            res.send({status: 'prodcuto actualizado'})
         }
         
-        ]
-        res.send({status: 'no se encontro archivo json, intente de nuevo'}) 
-        await fs.promises.writeFile(path, JSON.stringify(carts, null, '\t'));
     }
 
-} )
+    
+    
 
-*/
+    
+    /*
+    carts.map((cart) => {
+        if (cart.id === idCart) {
+            let exists = true;
+            let products = await cartsModel.find({'_id': idCart})
+        }
+    })
+    */
+        
+})
+
+
 export default router;
