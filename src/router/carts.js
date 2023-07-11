@@ -1,53 +1,28 @@
 import { Router} from "express";
-import fs from 'fs';
-import cartsModel from "../dao/mongodb/models/cart.model.js.js";
-import mongoose from "mongoose";
-
+import CartManager from "../dao/mongodb/cartManager.class.js";
 
 
 
 const router = Router();
-const path = './src/file/carts.json';
 
-const environment = async ()=>{
-
-    //const info = await fs.promises.readFile(path, 'utf-8')
-    //const cartsRes = JSON.parse(info);
-    //console.log(productsRes); 
-    await mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority')
-    //products.push(productsRes)
-    //console.log('***************************************************************');
-    //console.log(products);
-    //await cartsModel.insertMany(cartsRes)
-    let response = await cartsModel.find()
-    //let response1 = await productsModel.find().explain('executionStats')//first query
-    //let response = await userModel.find({first_name: 'Celia'}).explain('executionStats')//first query
-    //console.log(response);
-    //console.log(response1);
-    console.log('listo')
-}
-
-environment()
+let cartManager = new CartManager
 
 router.get('/',  async (req, res) => {
-    
-    const carts = await cartsModel.find()
-    
+    const carts = await cartManager.getCarts();
     res.send(carts)
 })
 
 router.get('/:cid',  async (req, res) => {
 
     const cid = req.params.cid
-    const cart = await cartsModel.find({_id: cid})
-    
+    const cart = await cartManager.getCartById({_id: cid})
     res.send(cart)
 })
 
 
 router.post('/', async (req, res) => {
     const cart = req.body
-    await cartsModel.insertMany(cart)
+    await cartManager.addCart(cart)
 
     res.send({status: 'success'})
 })
