@@ -1,6 +1,6 @@
 import { Router} from "express";
 import fs from 'fs';
-import cartsModel from "../models/cart.model.js";
+import cartsModel from "../dao/mongodb/models/cart.model.js.js";
 import mongoose from "mongoose";
 
 

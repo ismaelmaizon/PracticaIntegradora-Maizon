@@ -1,6 +1,6 @@
 import { Router} from "express";
 import fs from 'fs';
-import productsModel from "../models/product.model.js";
+import productsModel from "../dao/mongodb/models/product.model.js";
 import mongoose from "mongoose";
 
 
@@ -8,7 +8,7 @@ import mongoose from "mongoose";
 const router = Router();
 const path = './src/file/products.json';
 
-
+/*
 const environment = async ()=>{
 
     const info = await fs.promises.readFile(path, 'utf-8')
@@ -29,7 +29,7 @@ const environment = async ()=>{
 }
 
 environment()
-
+*/
 
 router.get('/',  async (req, res) => {
     const limite = req.query.limit

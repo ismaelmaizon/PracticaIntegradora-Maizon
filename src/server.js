@@ -1,6 +1,9 @@
 import express  from "express";
 import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
+
+import ProductManager from "./dao/mongodb/productManager.class.js";
+
 import routerProducts from "./router/products.js";
 import routerCarts from './router/carts.js';
 import viewsRouter from './router/views.js';
@@ -8,7 +11,7 @@ import handlebars from 'express-handlebars';
 import __dirname from "./utils.js";
 
 import {Server} from 'socket.io';
-import messagesModel from "./models/messages.model.js";
+import messagesModel from "./dao/mongodb/models/messages.model.js.js";
 
 
 const app = express();

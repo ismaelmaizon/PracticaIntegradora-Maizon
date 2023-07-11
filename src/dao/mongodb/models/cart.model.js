@@ -16,3 +16,17 @@ const cartsSchema = mongoose.Schema(
 const cartsModel = mongoose.model(cartsCollection, cartsSchema);
 
 export default cartsModel;
+
+
+/*
+products: {
+    type: [
+        {
+            product: {
+                type: mongoose.SchemaTypes.Types.ObjectId,
+                ref: "products"
+            },
+        },
+    ],
+},
+*/
