@@ -33,77 +33,69 @@ router.post('/:cid/product/:pid',  async (req, res) => {
     const idProduct = req.params.pid;
     console.log(idCart);
     console.log(idProduct);
-
-
-    const cartProducts = await cartsModel.find({'_id': idCart});
-    let exists = true;
-
-    let prod = {  
-        'product' : idProduct,
-        'quantity' : 1
-    }
-    cartProducts.map((i) => {
-        console.log(i);
-        //console.log(i.id);
-        //console.log(i.products);
-    })
-    console.log(cartProducts[0].id);
-    console.log(cartProducts[0].products);
-
-    // REVISAR LA PRIMERA CONDICION DADO QUE NUNCA INGRESA AL IF
-    // PERO FUNCIONA APARENTEMENTE BIEN SIN LA PRIMERA CONDICION
-    
-    if (cartProducts[0].products === []) {
-        cartProducts[0].products.push(prod);
-        console.log('porst pushh');
-        console.log(cartProducts[0].products);
-        
-        await cartsModel.updateOne({'_id': idCart}, {$set: {
-            'products': cartProducts.products 
-        }})
-        res.send({status: 'prodcuto nuevo agregado'})
-    }else {
-        console.log('dentro del else');
-        
-        cartProducts[0].products.map((prod) => {
-        
-            if (prod.product === idProduct) {
-                exists = false;
-                prod.quantity++;
-            }
-    
-        })
-
-        if(exists){
-            console.log('actualizando product');
-            cartProducts[0].products.push(prod);
-            await cartsModel.updateOne({'_id': idCart}, {$set: {
-                'products': cartProducts[0].products 
-            }})
-            res.send({status: 'prodcuto nuevo agregado'})
-        }else {
-            await cartsModel.updateOne({'_id': idCart}, {$set: {
-                'products': cartProducts[0].products 
-            }})
-            res.send({status: 'prodcuto actualizado'})
-        }
-        
-    }
-
-    
-    
-
-    
-    /*
-    carts.map((cart) => {
-        if (cart.id === idCart) {
-            let exists = true;
-            let products = await cartsModel.find({'_id': idCart})
-        }
-    })
-    */
-        
+    await cartManager.addProductToCart(idCart, idProduct)
+    res.send({status: 'success'})        
 })
 
 
 export default router;
+
+
+
+/*
+const cartProducts = await cartsModel.find({'_id': idCart});
+let exists = true;
+
+let prod = {  
+    'product' : idProduct,
+    'quantity' : 1
+}
+cartProducts.map((i) => {
+    console.log(i);
+    //console.log(i.id);
+    //console.log(i.products);
+})
+console.log(cartProducts[0].id);
+console.log(cartProducts[0].products);
+
+// REVISAR LA PRIMERA CONDICION DADO QUE NUNCA INGRESA AL IF
+// PERO FUNCIONA APARENTEMENTE BIEN SIN LA PRIMERA CONDICION
+
+if (cartProducts[0].products === []) {
+    cartProducts[0].products.push(prod);
+    console.log('porst pushh');
+    console.log(cartProducts[0].products);
+    
+    await cartsModel.updateOne({'_id': idCart}, {$set: {
+        'products': cartProducts.products 
+    }})
+    res.send({status: 'prodcuto nuevo agregado'})
+}else {
+    console.log('dentro del else');
+    
+    cartProducts[0].products.map((prod) => {
+    
+        if (prod.product === idProduct) {
+            exists = false;
+            prod.quantity++;
+        }
+
+    })
+
+    if(exists){
+        console.log('actualizando product');
+        cartProducts[0].products.push(prod);
+        await cartsModel.updateOne({'_id': idCart}, {$set: {
+            'products': cartProducts[0].products 
+        }})
+        res.send({status: 'prodcuto nuevo agregado'})
+    }else {
+        await cartsModel.updateOne({'_id': idCart}, {$set: {
+            'products': cartProducts[0].products 
+        }})
+        res.send({status: 'prodcuto actualizado'})
+    }
+    
+}
+
+*/

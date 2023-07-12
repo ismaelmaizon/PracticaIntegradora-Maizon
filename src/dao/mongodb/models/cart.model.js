@@ -6,10 +6,19 @@ const cartsCollection = 'carts1';
 const cartsSchema = mongoose.Schema(
     
     {
-        products: Array 
+        products: {
+            type: [
+                {
+                    product: {
+                        type: mongoose.Schema.Types.ObjectId,
+                        ref: "products",
+                    },
+                    quiantity: { type: Number, default: 1}
+                },
+            ],
+        },
     }
     
-	
 )
 
 
