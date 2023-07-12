@@ -16,16 +16,9 @@ export default class CartManager {
         return result
     }
     async getCartById(id){
-        let result = await cartsModel.findOne({_id : id});
+        let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
         return result
-    }
-    async updateProductToCart(cid, product){
-        let result = await cartsModel.updateOne({_id : cid}, {$set : {
-        'product': product }
-        })
-        return;
-    }
-    
+    }    
     async addProductToCart(cid, pid){
         const product = await this.productManager.getProductById(pid);
         const cart = await this.getCartById(cid);
@@ -37,31 +30,27 @@ export default class CartManager {
         if (productos.length === 0) {
             console.log('primer if');
             cart.products.push({ product: product});
+            cart.save();
         }else{
+            
             console.log('else');
-            productos.map((pr) => {
-                console.log(pr.product);
-                if (pr.product == pid) {
-                    console.log('elif');
-                    console.log(pr.quantity);
-                    console.log(pr.quiantity);
-                    console.log(pr);
-                    pr.quantity++;
-                    pr.quiantity++;
+            cart.products.map((product) => {
+                if (product.product == pid) {
+                    product.quiantity++; 
+                    console.log(product.quiantity);
                     exist = true;
-                    this.updateProductToCart(cid, pr.product);
                 }
             })
-            console.log(!!exist);
-            if (!exist) {
-                console.log('segundo if');
-                cart.products.push({ product: product});
-            }
-        }
 
-        //cart.save();
-        
+            if (exist) {
+                await cartsModel.updateOne( {_id : cid}, {$set: { products : cart.products }} )
+            }else{
+                cart.products.push({ product: product});
+                cart.save();
+            }
+
         return;
+    }
     }
     /*
     async deleteProduct(id){
@@ -69,3 +58,4 @@ export default class CartManager {
         return result
     }*/
 }
+
