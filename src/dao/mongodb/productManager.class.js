@@ -7,8 +7,16 @@ export default class ProductManager {
         let result = await productsModel.create(product);
         return result
     }
-    async getProduct(limit = null){
-        let result = await productsModel.find();
+    async getProduct(limit = 10, page = 1, sort = 0, filtro = null, filValor = null){
+        let whereOption = {}
+        // por si no tiene filtrado
+        if( filtro != '' && filValor != '' ){
+            whereOption = {[filtro] : filValor }
+        }
+
+        let result = await productsModel.paginate(
+            whereOption, 
+            {limit: limit, page: page, sort: {price: sort}})
         return result
     }
     async getProductById(id){
@@ -24,3 +32,5 @@ export default class ProductManager {
         return result
     }
 }
+
+

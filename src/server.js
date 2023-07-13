@@ -1,5 +1,4 @@
 import express  from "express";
-import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
 
 import ProductManager from "./dao/mongodb/productManager.class.js";

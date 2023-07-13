@@ -12,9 +12,14 @@ let productManager = new ProductManager
 
 router.get('/',  async (req, res) => {
     const limite = Number(req.query.limit)
+    const page = Number(req.query.page)
+    const sort = Number(req.query.sort)
+    const filtro = req.query.filtro
+    const filValor = req.query.filValor
+
     console.log('con limit ***************************************');
     console.log(limite);
-    const products = await productManager.getProduct(limite);
+    const products = await productManager.getProduct(limite, page, sort, filtro, filValor);
     console.log(products);
     res.send({products})
     /*
