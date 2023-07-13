@@ -42,22 +42,20 @@ const io = new Server (httpServer)
 const mensajes = []
 
 
+const productManager = new ProductManager
+
+
 io.on('connection', async (socket) => {
     console.log('conectado: ' + socket.id);
+    //let productManager = new ProductManager
 
-
-    let productManager = new ProductManager
-
-    socket.emit('update-productos', await productManager.getProduct())
-    /*
+    //socket.emit('update-productos', await productManager.getProduct())
+    
     socket.on('message', async(data) => {
         mensajes.push(data);
 
         console.log(data);
         console.log(mensajes);
-        //await messagesModel.insertMany(mensaje)
-
-
         io.emit( 'imprimir', mensajes );
 
     })
@@ -68,5 +66,8 @@ io.on('connection', async (socket) => {
         socket.broadcast.emit( 'ingreso', data);
 
     })
-    */
+
+    let prod = await productManager.getProduct(5, 1, 1);
+    socket.emit('productos', prod.docs)
+    
 })

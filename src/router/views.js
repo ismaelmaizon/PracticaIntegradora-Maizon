@@ -8,4 +8,9 @@ routes.get('/', (req, res) => {
 });
 
 
+routes.get('/products', (req, res) => {
+    res.render('products')
+});
+
+
 export default routes;

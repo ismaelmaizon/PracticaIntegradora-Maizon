@@ -3,14 +3,18 @@
 
 // lado del front
 
-
-
 const socket = io();
 let user;
 
+const produ = [
+    {
+        "pr": 1
+    }
+]
 
 const chatbox = document.getElementById('chatbox')
 const messageLogs = document.getElementById('messageLogs')
+
 
 Swal.fire({
     title: 'ingrese su correo electronico',
@@ -45,6 +49,7 @@ socket.on('imprimir', async (data) =>{
     } )
     messageLogs.innerHTML = mensajes
 })
+
 
 // aviso de ingreso nuevo
 socket.on('ingreso', (data) => {

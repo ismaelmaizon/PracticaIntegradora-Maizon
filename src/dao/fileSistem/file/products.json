@@ -1,0 +1,152 @@
+[
+	{
+		"title": "Vaso",
+		"description": "vaso exterior de plastico",
+		"code": "000001",
+		"price": "125.00",
+		"status": true,
+		"stock": "10",
+		"category": "3",
+		"id": 1
+	},
+	{
+		"title": "Silla de oficina",
+		"description": "Silla ergonómica para trabajo",
+		"code": "001245",
+		"price": "125.00",
+		"status": true,
+		"stock": "10",
+		"category": "3",
+		"id": 2
+	},
+	{
+		"title": "Silla gamer",
+		"description": "Silla con soporte lumbar para videojuegos",
+		"code": "001355",
+		"price": "325.00",
+		"status": true,
+		"stock": "5",
+		"category": "1",
+		"id": 3
+	},
+	{
+		"title": "Mesa de madera",
+		"description": "Mesa de comedor para 6 personas",
+		"code": "021355",
+		"price": "105.00",
+		"status": true,
+		"stock": "5",
+		"category": "2",
+		"id": 4
+	},
+	{
+		"title": "Mesa de vidrio",
+		"description": "Mesa de centro para sala de estar",
+		"code": "021005",
+		"price": "75.00",
+		"status": true,
+		"stock": "5",
+		"category": "2",
+		"id": 5
+	},
+	{
+		"title": "Mesa de jardín",
+		"description": "Mesa redonda de metal para exteriores",
+		"code": "021805",
+		"price": "175.00",
+		"status": true,
+		"stock": "15",
+		"category": "3",
+		"id": 6
+	},
+	{
+		"title": "Alfombra de lana",
+		"description": "Alfombra suave y cálida para sala de estar",
+		"code": "021000",
+		"price": "125.00",
+		"status": true,
+		"stock": "7",
+		"category": "3",
+		"id": 7
+	},
+	{
+		"title": "Alfombra de pelo largo",
+		"description": "Alfombra elegante para dormitorio",
+		"code": "021007",
+		"price": "100.00",
+		"status": true,
+		"stock": "7",
+		"category": "3",
+		"id": 8
+	},
+	{
+		"title": "Vaso de cristal",
+		"description": "Vaso de diseño clásico para bebidas frías",
+		"code": "021047",
+		"price": "50.00",
+		"status": true,
+		"stock": "70",
+		"category": "2",
+		"id": 9
+	},
+	{
+		"title": "Vaso de acero",
+		"description": "Vaso de diseño clásico para bebidas frías",
+		"code": "021048",
+		"price": "30.00",
+		"status": true,
+		"stock": "50",
+		"category": "3",
+		"id": 10
+	},
+	{
+		"title": "Vaso de plastico",
+		"description": "Vaso de diseño clásico para bebidas frías",
+		"code": "021049",
+		"price": "30.00",
+		"status": true,
+		"stock": "50",
+		"category": "3",
+		"id": 11
+	},
+	{
+		"title": "Cuadro abstracto",
+		"description": "Cuadro de diseño moderno para decoración",
+		"code": "021777",
+		"price": "250.00",
+		"status": true,
+		"stock": "5",
+		"category": "1",
+		"id": 12
+	},
+	{
+		"title": "Cuadro floral",
+		"description": "Cuadro de diseño clásico para decoración",
+		"code": "021888",
+		"price": "250.00",
+		"status": true,
+		"stock": "5",
+		"category": "2",
+		"id": 13
+	},
+	{
+		"title": "Farol de vidrio",
+		"description": "Farol decorativo para exteriores",
+		"code": "078521",
+		"price": "150.00",
+		"status": true,
+		"stock": "3",
+		"category": "3",
+		"id": 14
+	},
+	{
+		"title": "Lámpara de pie",
+		"description": "Lámpara de diseño moderno para sala de estar",
+		"code": "078531",
+		"price": "150.00",
+		"status": true,
+		"stock": "3",
+		"category": "3",
+		"id": 15
+	}
+]
