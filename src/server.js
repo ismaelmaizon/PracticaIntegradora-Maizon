@@ -2,6 +2,7 @@ import express  from "express";
 import __dirnmae from "./utils.js";
 
 import ProductManager from "./dao/mongodb/productManager.class.js";
+import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
 
 import routerProducts from "./router/products.js";
 import routerCarts from './router/carts.js';
@@ -43,6 +44,7 @@ const mensajes = []
 
 
 const productManager = new ProductManager
+const messagesMananger = new MessagesMananger
 
 
 io.on('connection', async (socket) => {
@@ -56,6 +58,7 @@ io.on('connection', async (socket) => {
 
         console.log(data);
         console.log(mensajes);
+        await messagesMananger.addmessage(data);
         io.emit( 'imprimir', mensajes );
 
     })

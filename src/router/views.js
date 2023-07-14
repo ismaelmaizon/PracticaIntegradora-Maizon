@@ -4,6 +4,8 @@ const routes = Router();
 
 
 routes.get('/', (req, res) => {
+    let r = req.body
+    console.log(r);
     res.render('index')
 });
 
