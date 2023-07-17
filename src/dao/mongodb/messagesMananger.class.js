@@ -9,12 +9,14 @@ export default class MessagesMananger {
 
     async addmessage(message) {
         try {
+          console.log('dentro de addmessage');
           console.log(message);
+          /*
           let message1 = {
-            'user' : message.user,
+            'users': message.user,
             'message' : message.message
-          }
-          let result = await messagesModel.create(message1);
+          }*/
+          let result = await messagesModel.create(message);
           return result;
         } catch (error) {
           console.error(error);

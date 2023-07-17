@@ -1,8 +1,10 @@
 import express  from "express";
 import __dirnmae from "./utils.js";
 
+
 import ProductManager from "./dao/mongodb/productManager.class.js";
 import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
+
 
 import routerProducts from "./router/products.js";
 import routerCarts from './router/carts.js';
@@ -43,8 +45,14 @@ const io = new Server (httpServer)
 const mensajes = []
 
 
+
 const productManager = new ProductManager
 const messagesMananger = new MessagesMananger
+
+let client = {
+    "users" : "isma@1234",
+    "message" : "puto el que lee"
+}
 
 
 io.on('connection', async (socket) => {
@@ -58,7 +66,7 @@ io.on('connection', async (socket) => {
 
         console.log(data);
         console.log(mensajes);
-        await messagesMananger.addmessage(data);
+        await messagesMananger.addmessage(client);
         io.emit( 'imprimir', mensajes );
 
     })
@@ -70,7 +78,8 @@ io.on('connection', async (socket) => {
 
     })
 
-    let prod = await productManager.getProduct(5, 1, 1);
+    let prod = await productManager.getProduct(20, 1, 1);
+    console.log(prod);
     socket.emit('productos', prod.docs)
     
 })

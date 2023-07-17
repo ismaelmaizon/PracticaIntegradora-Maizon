@@ -5,10 +5,10 @@ const messagesCollection = 'messages1';
 
 const messagesSchema = mongoose.Schema(
     {
-        messages :{ type : [{
+        messages :{
             users : String,
             message : String
-        }]}
+        }
     }
 )
 

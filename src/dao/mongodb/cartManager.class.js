@@ -18,7 +18,13 @@ export default class CartManager {
     async getCartById(id){
         let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
         return result
-    }    
+    }
+    //solo para usar al agregar al carrito   
+    /*
+    async getCartById(id){
+        let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
+        return result
+    }    */
     async addProductToCart(cid, pid){
         const product = await this.productManager.getProductById(pid);
         const cart = await this.getCartById(cid);
@@ -35,7 +41,8 @@ export default class CartManager {
             
             console.log('else');
             cart.products.map((product) => {
-                if (product.product == pid) {
+                console.log(product.product._id);
+                if (product.product._id == pid) {
                     product.quiantity++; 
                     console.log(product.quiantity);
                     exist = true;
@@ -49,13 +56,53 @@ export default class CartManager {
                 cart.save();
             }
 
+        }
         return;
     }
+
+    async updateCart(cid, products){
+        const cart = await this.getCartById(cid);
+        console.log(cart);
+        cart.products = products;
+        await cart.save();
+        return;
     }
-    /*
-    async deleteProduct(id){
-        let result = await cartsModel.deleteOne({_id : id});
-        return result
-    }*/
+
+    async updateQuantityProduct(cid, pid, quantity){
+        const cart = await this.getCartById(cid);
+        console.log(quantity);
+        let exist = false;
+        cart.products.map((product) => {
+
+            if (product.product._id == pid) {
+                product.quiantity = quantity; 
+                console.log(product.quiantity);
+                exist = true;
+            }
+
+        })
+        if (exist) {
+            await cartsModel.updateOne( {_id : cid}, {$set: { products : cart.products }} )
+        }
+
+
+        return;
+    }
+
+    async deleteProductFromCart(cid, pid){
+        const cart = await this.getCartById(cid);
+        console.log(cid);
+        console.log(pid);
+        cart.products.pull(pid);
+        await cart.save();
+        return;
+    }
+    async deleteAllProductsFromCart(cid){
+        const cart = await this.getCartById(cid);
+        console.log(cid);
+        cart.products = [];
+        await cart.save();
+        return;
+    }
 }
 

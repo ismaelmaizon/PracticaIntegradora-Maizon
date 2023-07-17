@@ -1,3 +1,5 @@
+// lado del front
+
 const socket = io();
 
 
@@ -6,38 +8,13 @@ const description= document.getElementById('description')
 const price= document.getElementById('price')
 const stock= document.getElementById('stock')
 
-/*
-Swal.fire({
-    title: 'producto',
-    input: 'text',
-    inputValidator: (value) => {
-        return !value && 'necesitas escribir tu nombre'
-    },
-    allowOutsideClick: false
-}).then((result) => { 
-    user = result.value;
-    socket.emit('authenticatedUser', user)
-})
-*/
-/*
-socket.on('productos', async (data) =>{
-    console.log(data);
 
-    data.forEach((pr)=> {
-        title.innerHTML = 'Titulo: '+ pr.title
-        description.innerHTML = 'Descripcion: '+ pr.description
-        price.innerHTML = 'Precio: $'+ pr.price
-        stock.innerHTML = 'Stock: '+ pr.stock
-    })
-
-
-})*/
 
 socket.on('productos', async (data) => {
     console.log(data);
 
     // Limpiar el contenido existente antes de renderizar nuevos productos
-    title.innerHTML = '';
+    product.innerHTML = '';
 
     data.forEach((pr) => {
         // Crear un div para cada producto
@@ -63,7 +40,7 @@ socket.on('productos', async (data) => {
         productDiv.appendChild(stockElement);
 
         // Agregar el div del producto al contenedor principal
-        title.appendChild(productDiv);
+        product.appendChild(productDiv);
     });
 });
 
