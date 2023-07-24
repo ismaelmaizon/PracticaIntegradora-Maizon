@@ -1,4 +1,7 @@
 import express  from "express";
+import session from "express-session";
+import MongoStore from "connect-mongo";
+import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
 
 
@@ -6,9 +9,10 @@ import ProductManager from "./dao/mongodb/productManager.class.js";
 import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
 
 
-import routerProducts from "./router/products.js";
-import routerCarts from './router/carts.js';
-import viewsRouter from './router/views.js';
+import routerProducts from "./router/products.router.js";
+import routerCarts from './router/carts.router.js';
+import viewsRouter from './router/views.router.js';
+import sessionRouter from "./router/session.router.js";
 import handlebars from 'express-handlebars';
 import __dirname from "./utils.js";
 
@@ -17,26 +21,42 @@ import {Server} from 'socket.io';
 
 
 const app = express();
+const connection = mongoose.connect(
+    "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
+);
+
 
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
 app.use(express.static(__dirname+'/public'));
 
-
+app.use(
+    session({
+      store: new MongoStore({
+        mongoUrl:
+          "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
+      }),
+      secret: "mongoSecret",
+      resave: true,
+      saveUninitialized: false,
+    })
+);
 
 // config de platillas
 app.engine('handlebars', handlebars.engine());
 app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
+
+// rutas
 app.use('/', viewsRouter);
 app.use('/api/products', routerProducts)
 app.use('/api/carts', routerCarts)
+app.use('/api/sessions', sessionRouter)
 
 
-
+//servidor
 const httpServer = app.listen( 8080, () => {console.log('servidor escuchando');})
 
 
@@ -51,7 +71,7 @@ const messagesMananger = new MessagesMananger
 
 let client = {
     "users" : "isma@1234",
-    "message" : "puto el que lee"
+    "message" : "hola"
 }
 
 

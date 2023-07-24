@@ -22,18 +22,6 @@ router.get('/',  async (req, res) => {
     const products = await productManager.getProduct(limite, page, sort, filtro, filValor);
     console.log(products);
     res.send({products})
-    /*
-    //const products = JSON.parse(info);
-    if (limite === undefined) {
-    } else {
-        const productsLimit = []
-        products.map( pr => {
-            if (pr.id <= limite) { productsLimit.push(pr) }
-        } )
-        console.log(productsLimit);
-        res.send({productsLimit})
-    }
-    */
 })
 
 router.get('/:pid',  async (req, res) => {
