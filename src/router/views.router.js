@@ -1,4 +1,5 @@
 import { Router } from "express"; 
+import passport from "passport";
 
 const routes = Router();
 
@@ -35,5 +36,18 @@ routes.get('/register', (req, res) => {
 routes.get('/login', (req, res) => {
     res.render('login');
 })
+
+// 
+routes.get('/', passport.authenticate('jwt', {session: false}),(req, res) => {
+    res.render('profile', {
+        user: req.user
+    });
+})
+
+routes.get('/resetPassword',(req,res)=>{
+    res.render('resetPassword');
+})
+
+
 
 export default routes;

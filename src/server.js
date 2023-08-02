@@ -20,6 +20,16 @@ import {Server} from 'socket.io';
 //import messagesModel from "./dao/mongodb/models/messages.model.js.js";
 
 
+
+
+import passport from "passport";
+import cookieParser from "cookie-parser";
+import { initializePassportJWT } from "./config/jwt.passport.js";
+import { initializePassportLocal } from "./config/local.passport.js";
+
+
+
+
 const app = express();
 const connection = mongoose.connect(
     "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
@@ -30,6 +40,13 @@ const connection = mongoose.connect(
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(__dirname+'/public'));
+
+
+app.use(cookieParser());
+initializePassportJWT();
+initializePassportLocal();
+app.use(passport.initialize())
+
 
 app.use(
     session({

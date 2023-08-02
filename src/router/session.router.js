@@ -1,9 +1,14 @@
 import { Router } from "express";
 import userModel from "../dao/mongodb/models/Users.model.js";
+import passport from "passport";
+import jwt from 'jsonwebtoken';
 
 const router = Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", passport.authenticate('register', {session: false}) , async (req, res) => {
+  /*
+  ya no necesitamos este codigo
+
   const { first_name, last_name, email, age, password, rol = "usuario"} = req.body;
   const exist = await userModel.findOne({ email });
 
@@ -19,11 +24,15 @@ router.post("/register", async (req, res) => {
     age,
     password,
     rol
-  });
+  });*/
+
   res.send({ status: "success", message: "usuario  registrado" });
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
+  /*  
+  ya no necesitamos este codigo
+
   const { email, password } = req.body;
   console.log(email, password)
   const user = await userModel.findOne({ email: email, password: password });
@@ -35,8 +44,39 @@ router.post("/login", async (req, res) => {
     age: user.age,
     rol: user.rol,
   };
-  res.send({ status: "success", message: req.session.user });
+  res.send({ status: "success", message: req.session.user });*/
+
+  let token = jwt.sign({email: req.body.email}, 'coderSecret', {expiresIn: "24h"});
+  res.cookie('coderCookie', token, {httpOnly: true}).send({status: 'success'})
+
 });
+
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.send(req.user);
+  }
+);
+
+router.post("/restartPassword", async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    return res
+      .status(400)
+      .send({ status: "error", error: "Incomplete Values" });
+  const user = await userModel.findOne({ email });
+  if (!user)
+    return res.status(404).send({ status: "error", error: "Not user found" });
+  const newHashedPassword = createHash(password);
+  await userModel.updateOne(
+    { _id: user._id },
+    { $set: { password: newHashedPassword } }
+  );
+  res.send({ status: "success", message: "Contraseña restaurada" });
+});
+
+
 
 router.get("/logout", (req,res) => {
   req.session.destroy( err => {
