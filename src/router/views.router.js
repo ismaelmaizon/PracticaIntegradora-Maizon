@@ -16,7 +16,7 @@ routes.get('/products', (req, res) => {
     // si el usuario no tiene rol de admin no puede ver los productos
     const user = req.session.user
 
-    if (user.rol === 'admin') {
+    if (user.role === 'admin') {
         res.render('products', {
             user: req.session.user
         })
