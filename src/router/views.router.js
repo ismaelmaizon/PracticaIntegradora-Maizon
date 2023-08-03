@@ -1,5 +1,6 @@
 import { Router } from "express"; 
 import passport from "passport";
+import userModel from "../dao/mongodb/models/Users.model.js";
 
 const routes = Router();
 
@@ -15,6 +16,8 @@ routes.get('/products', (req, res) => {
 
     // si el usuario no tiene rol de admin no puede ver los productos
     const user = req.session.user
+    console.log(user);
+    console.log(user.role);
 
     if (user.role === 'admin') {
         res.render('products', {
@@ -38,16 +41,19 @@ routes.get('/login', (req, res) => {
 })
 
 // 
-routes.get('/', passport.authenticate('jwt', {session: false}),(req, res) => {
+routes.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
     /*
     res.render('profile', {
         user: req.user
     });
     */
-    const user = req.user
-    console.log(user);
+    const userEmail = req.user
+    console.log(userEmail);
+    console.log(userEmail.email);
+    let user = await userModel.findOne({email: userEmail.email})
+    console.log(user.role);
 
-    if (user.role === 'admin') {
+    if (user.role == 'admin') {
         res.render('products', {
             user: req.user
         })
