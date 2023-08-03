@@ -17,7 +17,7 @@ export const initializePassportLocal = () => {
     passport.use('register', new localStrategy(
         {passReqToCallback: true, usernameField: 'email'},
         async(req, username, password, done) => {
-            const { first_name, last_name, age, email } = req.body;
+            const { first_name, last_name, age, email} = req.body;
             try {   
                 let user = await userModel.findOne({email: username})
                 if(user) {
@@ -31,7 +31,7 @@ export const initializePassportLocal = () => {
                     last_name,
                     age,
                     email,
-                    passport: createHash(password)
+                    password: createHash(password)
                 }
                 const result = await userModel.create(newUser)
                 return done(null, result)
@@ -44,6 +44,8 @@ export const initializePassportLocal = () => {
     // ESTRATEGIA DE LOGIN
     passport.use('login', new localStrategy({usernameField: 'email'}, 
     async (username, password, done) => {
+        console.log(username);
+        console.log(password);
         try{
             const user = await userModel.findOne({ email: username })
             if(!user){
@@ -54,7 +56,7 @@ export const initializePassportLocal = () => {
                 return done('invalid password', null)
             }
             return done(null, user)
-        } catch (e) {}
+        } catch (e) {console.error(e);}
     }
     ))        
 

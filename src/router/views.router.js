@@ -39,9 +39,23 @@ routes.get('/login', (req, res) => {
 
 // 
 routes.get('/', passport.authenticate('jwt', {session: false}),(req, res) => {
+    /*
     res.render('profile', {
         user: req.user
     });
+    */
+    const user = req.user
+    console.log(user);
+
+    if (user.role === 'admin') {
+        res.render('products', {
+            user: req.user
+        })
+    }else {
+        res.render('profile', {
+            user: req.user
+        });
+    }
 })
 
 routes.get('/resetPassword',(req,res)=>{

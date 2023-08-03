@@ -31,15 +31,18 @@ import { initializePassportLocal } from "./config/local.passport.js";
 
 
 const app = express();
+
+// conexion con base de datos
 const connection = mongoose.connect(
     "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
+    //{ useNewUrlParser: true, useUnifiedTopology: true } 
 );
 
 
 
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(express.static(__dirname+'/public'));
+app.use(express.json()); //Esta línea de código agrega un middleware a la aplicación para procesar datos en formato JSON. El middleware express.json() analiza el cuerpo de las solicitudes entrantes con formato JSON y los convierte en objetos JavaScript accesibles a través de req.body. Esto es útil cuando se envían datos JSON en las solicitudes POST o PUT desde un cliente al servidor.
+app.use(express.urlencoded({extended:true})); //Esta línea de código agrega otro middleware para procesar datos de formularios enviados a través de solicitudes POST. El middleware express.urlencoded() analiza el cuerpo de las solicitudes entrantes con datos codificados en URL y los convierte en un objeto JavaScript accesible a través de req.body. El parámetro {extended: true} permite que el middleware analice datos complejos, como arrays y objetos anidados, en los datos codificados en URL.
+app.use(express.static(__dirname+'/public')); //Esta línea de código agrega un middleware que sirve archivos estáticos desde un directorio específico en el servidor. En este caso, está configurado para servir archivos estáticos desde el directorio "public" en la ubicación del archivo actual (__dirname es una variable que representa la ruta del directorio actual). Esto es útil para servir archivos CSS, imágenes, scripts y otros recursos estáticos en la aplicación web.
 
 
 app.use(cookieParser());
@@ -48,15 +51,16 @@ initializePassportLocal();
 app.use(passport.initialize())
 
 
+// este scrip sirve para conectar las sesiones con nuestra base de datos
 app.use(
     session({
-      store: new MongoStore({
-        mongoUrl:
-          "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
-      }),
-      secret: "mongoSecret",
-      resave: true,
-      saveUninitialized: false,
+        store: new MongoStore({
+        mongoUrl:"mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
+        // ttl: 20,  (time to live) tiempo de expracion de la session
+        }),
+        secret: "mongoSecret",
+        resave: true,
+        saveUninitialized: false,
     })
 );
 
