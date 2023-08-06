@@ -20,15 +20,13 @@ import {Server} from 'socket.io';
 //import messagesModel from "./dao/mongodb/models/messages.model.js.js";
 
 
-
-
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import { initializePassportJWT } from "./config/jwt.passport.js";
 import { initializePassportLocal } from "./config/local.passport.js";
 
 
-
+import { proceso } from "./config/config.js";
 
 const app = express();
 
@@ -49,7 +47,7 @@ app.use(cookieParser());
 initializePassportJWT();
 initializePassportLocal();
 app.use(passport.initialize())
-
+proceso();
 
 // este scrip sirve para conectar las sesiones con nuestra base de datos
 app.use(
@@ -78,7 +76,7 @@ app.use('/api/sessions', sessionRouter)
 
 
 //servidor
-const httpServer = app.listen( 8080, () => {console.log('servidor escuchando');})
+const httpServer = app.listen( process.env.PORT, () => {console.log('servidor escuchando');})
 
 
 const io = new Server (httpServer)
