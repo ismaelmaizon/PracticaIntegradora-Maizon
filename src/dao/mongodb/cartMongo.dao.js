@@ -1,12 +1,13 @@
 import mongoose from "mongoose";
 import cartsModel from "./models/cart.model.js";
-import ProductManager from "./productManager.class.js";
+import ProductManager from "./productMongo.dao.js";
 
 export default class CartManager {
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
     
     productManager = new ProductManager;
     
+    // creando carrito
     async addCart(cart){
         let result = await cartsModel.create(cart);
         return result
@@ -15,6 +16,7 @@ export default class CartManager {
         let result = await cartsModel.find();
         return result
     }
+    //ver un carrito
     async getCartById(id){
         let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
         return result
@@ -25,6 +27,8 @@ export default class CartManager {
         let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
         return result
     }    */
+
+    // agregar un producto al carrito
     async addProductToCart(cid, pid){
         const product = await this.productManager.getProductById(pid);
         const cart = await this.getCartById(cid);
@@ -60,6 +64,7 @@ export default class CartManager {
         return;
     }
 
+    // actualizar carrito
     async updateCart(cid, products){
         const cart = await this.getCartById(cid);
         console.log(cart);
@@ -68,6 +73,7 @@ export default class CartManager {
         return;
     }
 
+    // actualizar cantidad de producto en el carrito
     async updateQuantityProduct(cid, pid, quantity){
         const cart = await this.getCartById(cid);
         console.log(quantity);
@@ -89,6 +95,7 @@ export default class CartManager {
         return;
     }
 
+    // eliminar un producto del carrito
     async deleteProductFromCart(cid, pid){
         const cart = await this.getCartById(cid);
         console.log(cid);
@@ -97,6 +104,7 @@ export default class CartManager {
         await cart.save();
         return;
     }
+    // eliminar todos los productos del carrito
     async deleteAllProductsFromCart(cid){
         const cart = await this.getCartById(cid);
         console.log(cid);

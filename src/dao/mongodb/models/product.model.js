@@ -5,13 +5,13 @@ const productsCollection = 'products1';
 
 const productsSchema = mongoose.Schema(
     {
-		title: { type: String, index : true },
-		description: String,
-		code: String,
-		price: Number,
+		title: { type: String, index : true, required: true},
+		description: { type: String, required: true},
+		code: {type: Number, required: true},
+		price: { type: Number, required: true},
 		status: { type : Boolean, default : true },
-		stock: Number,
-		category: Number
+		stock: { type: Number, required: true},
+		category: { type: String, required: true}
 	}
 )
 

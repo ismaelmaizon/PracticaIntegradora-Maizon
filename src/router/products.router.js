@@ -1,5 +1,6 @@
 import { Router} from "express";
-import ProductManager from "../dao/mongodb/productManager.class.js";
+import ProductManager from "../dao/mongodb/productMongo.dao.js";
+import ProductController from "../controllers/products.controller.js";
 
 
 const router = Router();
@@ -8,43 +9,33 @@ const path = './src/file/products.json';
 // para imprimrir lo que escriben
 
 let productManager = new ProductManager
+let productController = new ProductController
 
-
+// ver products
 router.get('/',  async (req, res) => {
-    const limite = Number(req.query.limit)
-    const page = Number(req.query.page)
-    const sort = Number(req.query.sort)
-    const filtro = req.query.filtro
-    const filValor = req.query.filValor
-
-    console.log('con limit ***************************************');
-    console.log(limite);
-    const products = await productManager.getProduct(limite, page, sort, filtro, filValor);
-    console.log(products);
-    res.send({products})
+    const result = await productController.getProductController(req)
+    console.log(result);
+    res.send({result})
 })
-
+// ver un product
 router.get('/:pid',  async (req, res) => {
-
     const id = req.params.pid
-    const product = await productManager.getProductById(id)
-    if (product != undefined) {
-        res.send(product)
-    }else {
-        res.send({status: 'el archivo con ese ID no se encontro'})
-    }
-
+    const product = await productController.getProductControllerById(id)
+   
+    res.send(product)
 })
 
+
+// añadiendo product
 router.post('/',  async (req, res) => {
-    const product = req.body;
-    await productManager.addProduct(product)
-    console.log(product);
+    const newProduct = req.body;
+    await productController.createProductController(newProduct)
+    console.log(newProduct);
     res.send({status: 'se cargo el product'})
 
 } )
 
-
+// actualizar product
 router.put('/:pid', async(req, res) => {
     const product = req.body;
     const pid = req.params.pid;
@@ -54,12 +45,12 @@ router.put('/:pid', async(req, res) => {
 
 })
 
-
+// eliminar product
 router.delete('/:pid', async(req, res) => {
     const pid = req.params.pid;
     console.log(pid);
 
-    await productManager.deleteProduct(pid)
+    await productController.updateProductControllerById(pid)
     res.send({status: 'elemento eliminado'});
     
 })

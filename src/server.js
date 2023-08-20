@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
 
 
-import ProductManager from "./dao/mongodb/productManager.class.js";
+import ProductManager from "./dao/mongodb/productMongo.dao.js";
 import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
 
 
@@ -68,11 +68,6 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
 
-// rutas
-app.use('/', viewsRouter);
-app.use('/api/products', routerProducts)
-app.use('/api/carts', routerCarts)
-app.use('/api/sessions', sessionRouter)
 
 
 //servidor
@@ -81,20 +76,13 @@ const httpServer = app.listen( process.env.PORT, () => {console.log('servidor es
 
 const io = new Server (httpServer)
 
-const mensajes = []
-
-
-
-const productManager = new ProductManager
-const messagesMananger = new MessagesMananger
-
-let client = {
-    "users" : "isma@1234",
-    "message" : "hola"
-}
-
 
 io.on('connection', async (socket) => {
+    
+    let mensajes = []    
+    let productManager = new ProductManager
+    let messagesMananger = new MessagesMananger
+    
     console.log('conectado: ' + socket.id);
     //let productManager = new ProductManager
 
@@ -122,3 +110,10 @@ io.on('connection', async (socket) => {
     socket.emit('productos', prod.docs)
     
 })
+
+
+// rutas
+app.use('/', viewsRouter);
+app.use('/api/products', routerProducts)
+app.use('/api/carts', routerCarts)
+app.use('/api/sessions', sessionRouter)
