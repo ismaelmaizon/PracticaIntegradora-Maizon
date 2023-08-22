@@ -93,7 +93,7 @@ router.get("/logout", (req,res) => {
 // acceso con github
 // esta configuración 'passport.authenticate('github', {scope: 'user:email'})' es por defecto
 router.get('/github',
-      passport.authenticate('github', {scope: 'user:email'}),
+      passport.authenticate('github', {scope: 'user:email', session:false}),
       (req, res) => {}
 )
 // el callback le estamos indicando que use el proceso de autenticacion de github, el failureRedirect lo que hace es que en caso de que

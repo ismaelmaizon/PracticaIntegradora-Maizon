@@ -3,8 +3,8 @@ import passport from "passport";
 //import local from 'passport-local';
 import { createHash } from "../utils.js"; 
 import { validatePassword } from "../utils.js";
-import GithubStrategy from "passport-github2";
-
+import { Strategy as GithubStrategy } from 'passport-github2';
+//import OAuth2Strategy from 'passport-github2';
 
 
 //const localStrategy = local.Strategy
@@ -64,38 +64,39 @@ export const initializePassportLocal = () => {
 */
     // ESTRATEGIA GITHUB 
 
+// const GithubStrategy = require('passport-github2').Strategy;    
     passport.use(
         'github',
         new GithubStrategy(
             {
-            //authorizationURL: 'http://localhost:8080',
-            //tokenURL: 'https://www.example.com/oauth2/token',
-            clientID: "Iv1.d7ef585c76e9cbe0", 
-            clientSecret:"827e04171048103cd3088a321b58dce192088177", 
-            callbackURL: "http://localhost:8080/api/sessions/githubcallback"
-            }),
-        async (accessToken, refreshToken, profile, done)=>{
-            try {
-                let user = await this.userModel.findOne({email: profile._json.email});
-                if(!user) {
-                    let newUser = {
-                        first_name: profile._json.name,
-                        last_name: 'test last name',
-                        age: Number,
-                        email: profile._json.email,
-                        password: '1234'
+                clientID: "c92cd79869789877a1a3", 
+                clientSecret: "9f3a2c2d5ec9f203c5555b344bb38eabeae0497b", 
+                callbackURL: "http://localhost:8080/api/sessions/githubcallback"
+            },
+            async (accessToken, refreshToken, profile, done) => {
+                try {
+                    // Aquí puedes realizar la lógica de verificación y creación del usuario
+                    let user = await this.userModel.findOne({ email: profile._json.email });
+                    if (!user) {
+                        let newUser = {
+                            first_name: profile._json.name,
+                            last_name: 'test last name',
+                            age: Number,
+                            email: profile._json.email,
+                            password: '1234'
+                        };
+                        let result = await this.userModel.create(newUser);
+                        return done(null, result);
+                    } else {
+                        // Si el usuario ya existe, puedes decidir cómo manejarlo
+                        return done(null, user);
                     }
-                    let result = await this.userModel.create(newUser);
-                    done(null, result);
-                    
-                }else{
-                    done(null,false)
+                } catch (error) {
+                    return done(error);
                 }
-            } catch(error){
-                console.log(error);
             }
-        }
-    )
+        )
+    );
 
     // funciones
 
