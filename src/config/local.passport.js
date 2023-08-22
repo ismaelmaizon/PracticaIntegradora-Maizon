@@ -1,17 +1,18 @@
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
-import local from 'passport-local';
+//import local from 'passport-local';
 import { createHash } from "../utils.js"; 
 import { validatePassword } from "../utils.js";
+import GithubStrategy from "passport-github2";
 
 
 
-const localStrategy = local.Strategy
+//const localStrategy = local.Strategy
 
 
 
 export const initializePassportLocal = () => {
-
+/*
     // ESTRATEGIA DE REGISTRO
 
     passport.use('register', new localStrategy(
@@ -55,9 +56,57 @@ export const initializePassportLocal = () => {
             if(validatePassword(password, user)){
                 return done('invalid password', null)
             }
+            console.log(user);
             return done(null, user)
         } catch (e) {console.error(e);}
     }
     ))        
+*/
+    // ESTRATEGIA GITHUB 
 
+    passport.use(
+        'github',
+        new GithubStrategy(
+            {
+            //authorizationURL: 'http://localhost:8080',
+            //tokenURL: 'https://www.example.com/oauth2/token',
+            clientID: "Iv1.d7ef585c76e9cbe0", 
+            clientSecret:"827e04171048103cd3088a321b58dce192088177", 
+            callbackURL: "http://localhost:8080/api/sessions/githubcallback"
+            }),
+        async (accessToken, refreshToken, profile, done)=>{
+            try {
+                let user = await this.userModel.findOne({email: profile._json.email});
+                if(!user) {
+                    let newUser = {
+                        first_name: profile._json.name,
+                        last_name: 'test last name',
+                        age: Number,
+                        email: profile._json.email,
+                        password: '1234'
+                    }
+                    let result = await this.userModel.create(newUser);
+                    done(null, result);
+                    
+                }else{
+                    done(null,false)
+                }
+            } catch(error){
+                console.log(error);
+            }
+        }
+    )
+
+    // funciones
+
+
+    // esto es para poder rellenar mis sesiones
+    passport.serializeUser((user, done)=>{
+        done(null, user._id)
+    })
+    // deserializar la sesion, esto passsport lo hacer solo
+    passport.deserializeUser(async(id, done)=>{
+        let user = await userModel.findById(id);
+        done(null, user);
+    })
 };

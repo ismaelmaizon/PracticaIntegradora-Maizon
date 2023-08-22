@@ -28,6 +28,7 @@ import { initializePassportLocal } from "./config/local.passport.js";
 
 import { proceso } from "./config/config.js";
 
+
 const app = express();
 
 // conexion con base de datos

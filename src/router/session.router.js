@@ -1,10 +1,11 @@
-import { Router } from "express";
+import { request, Router } from "express";
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
 import jwt from 'jsonwebtoken';
 
 const router = Router();
 
+// Registrarse
 router.post("/register", passport.authenticate('register', {session: false}) , async (req, res) => {
   /*
   ya no necesitamos este codigo
@@ -29,6 +30,7 @@ router.post("/register", passport.authenticate('register', {session: false}) , a
   res.send({ status: "success", message: "usuario  registrado" });
 });
 
+//Loguearse
 router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
   /*  
   ya no necesitamos este codigo
@@ -51,6 +53,7 @@ router.post("/login",passport.authenticate('login', {session: false}) , async (r
 
 });
 
+
 router.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
@@ -59,6 +62,7 @@ router.get(
   }
 );
 
+// resetear contraseña
 router.post("/restartPassword", async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password)
@@ -77,12 +81,29 @@ router.post("/restartPassword", async (req, res) => {
 });
 
 
-
+// Deslogeo
 router.get("/logout", (req,res) => {
   req.session.destroy( err => {
     if (!err) res.send('logout ok')
     else res.send({status: "error", body: err})
   });
 })
+
+
+// acceso con github
+// esta configuración 'passport.authenticate('github', {scope: 'user:email'})' es por defecto
+router.get('/github',
+      passport.authenticate('github', {scope: 'user:email'}),
+      (req, res) => {}
+)
+// el callback le estamos indicando que use el proceso de autenticacion de github, el failureRedirect lo que hace es que en caso de que
+// falle el acceso o la autenticacion, github redireccionara a /Loging
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/login'}), async ( req, res) => {
+  console.log('exito');
+  request.session.user = req.user
+  res.redirect('/')
+} )
+
+// la direccion '/' es la direccion de la pagina raiz que es la que nos da infortmaicon del perfil
 
 export default router

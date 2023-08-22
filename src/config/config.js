@@ -1,9 +1,6 @@
 import dotenv from 'dotenv';
 import { Command } from 'commander';
 
-
-
-
 export const proceso = () => {
     const command = new Command();
     
