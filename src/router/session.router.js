@@ -32,8 +32,8 @@ router.post("/register", passport.authenticate('register', {session: false}) , a
 
 //Loguearse
 router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
-  /*  
-  ya no necesitamos este codigo
+  
+  //ya no necesitamos este codigo
 
   const { email, password } = req.body;
   console.log(email, password)
@@ -44,12 +44,11 @@ router.post("/login",passport.authenticate('login', {session: false}) , async (r
     name: user.first_name + user.last_name,
     email: user.email,
     age: user.age,
-    rol: user.rol,
+    role: user.role,
   };
-  res.send({ status: "success", message: req.session.user });*/
 
   let token = jwt.sign({email: req.body.email}, 'coderSecret', {expiresIn: "24h"});
-  res.cookie('coderCookie', token, {httpOnly: true}).send({status: 'success'})
+  res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success", message: req.session.user }) //esta parte "message: req.session.user" es necesario enviar para poder hacer la validacion del rol 
 
 });
 
@@ -93,15 +92,16 @@ router.get("/logout", (req,res) => {
 // acceso con github
 // esta configuración 'passport.authenticate('github', {scope: 'user:email'})' es por defecto
 router.get('/github',
-      passport.authenticate('github', {scope: 'user:email', session:false}),
+      passport.authenticate('github', {scope: 'user:email'}),
       (req, res) => {}
 )
 // el callback le estamos indicando que use el proceso de autenticacion de github, el failureRedirect lo que hace es que en caso de que
 // falle el acceso o la autenticacion, github redireccionara a /Loging
 router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/login'}), async ( req, res) => {
   console.log('exito');
-  request.session.user = req.user
-  res.redirect('/')
+  req.session.user = req.user
+  console.log(req.session.user);
+  res.redirect('/products') // esta ruta muestra perfil y productos
 } )
 
 // la direccion '/' es la direccion de la pagina raiz que es la que nos da infortmaicon del perfil

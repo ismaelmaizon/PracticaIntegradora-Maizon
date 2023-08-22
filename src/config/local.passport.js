@@ -1,18 +1,17 @@
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
-//import local from 'passport-local';
+import local from 'passport-local';
 import { createHash } from "../utils.js"; 
 import { validatePassword } from "../utils.js";
 import { Strategy as GithubStrategy } from 'passport-github2';
-//import OAuth2Strategy from 'passport-github2';
 
 
-//const localStrategy = local.Strategy
+const localStrategy = local.Strategy
 
 
 
 export const initializePassportLocal = () => {
-/*
+
     // ESTRATEGIA DE REGISTRO
 
     passport.use('register', new localStrategy(
@@ -61,10 +60,9 @@ export const initializePassportLocal = () => {
         } catch (e) {console.error(e);}
     }
     ))        
-*/
+
     // ESTRATEGIA GITHUB 
 
-// const GithubStrategy = require('passport-github2').Strategy;    
     passport.use(
         'github',
         new GithubStrategy(
@@ -76,16 +74,16 @@ export const initializePassportLocal = () => {
             async (accessToken, refreshToken, profile, done) => {
                 try {
                     // Aquí puedes realizar la lógica de verificación y creación del usuario
-                    let user = await this.userModel.findOne({ email: profile._json.email });
+                    let user = await userModel.findOne({ email: profile._json.email });
                     if (!user) {
                         let newUser = {
                             first_name: profile._json.name,
                             last_name: 'test last name',
-                            age: Number,
+                            age: 25,
                             email: profile._json.email,
                             password: '1234'
                         };
-                        let result = await this.userModel.create(newUser);
+                        let result = await userModel.create(newUser);
                         return done(null, result);
                     } else {
                         // Si el usuario ya existe, puedes decidir cómo manejarlo
