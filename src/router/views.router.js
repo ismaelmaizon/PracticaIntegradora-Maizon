@@ -11,7 +11,7 @@ routes.get('/chat', (req, res) => {
     res.render('index')
 });
 
-
+//ver productos "solo los puede ver un admin"
 routes.get('/products', (req, res) => {
 
     // si el usuario no tiene rol de admin no puede ver los productos
@@ -25,11 +25,10 @@ routes.get('/products', (req, res) => {
             user: req.session.user
         })
     }else {
-        res.render('profile', {
-            user: req.session.user
-        });
+        res.send({status: "no autorizado" })
     }
-});
+    }
+);
 
 
 //LOGIN
@@ -43,11 +42,7 @@ routes.get('/login', (req, res) => {
 
 // 
 routes.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
-    /*
-    res.render('profile', {
-        user: req.user
-    });
-    */
+ 
     const userEmail = req.user
     console.log(userEmail);
     console.log(userEmail.email);

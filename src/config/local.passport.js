@@ -75,6 +75,7 @@ export const initializePassportLocal = () => {
                 try {
                     // Aquí puedes realizar la lógica de verificación y creación del usuario
                     let user = await userModel.findOne({ email: profile._json.email });
+                    console.log(profile._json);
                     if (!user) {
                         let newUser = {
                             first_name: profile._json.name,

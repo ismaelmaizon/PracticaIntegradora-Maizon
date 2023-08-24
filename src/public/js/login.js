@@ -1,3 +1,4 @@
+
 const form = document.getElementById('loginForm');
 
 form.addEventListener('submit',e=>{
@@ -8,14 +9,15 @@ form.addEventListener('submit',e=>{
         obj[key]=value});
     fetch('/api/sessions/login',{
         method:'POST',
-        body:JSON.stringify(obj),
+        body: JSON.stringify(obj),
         headers:{
             'Content-Type':'application/json'
         }
-    }).then(result=>{
+    })
+    .then((response) => response.json())
+    .then( result =>{
         if(result.status===200){
             console.log(result.status);
-           // window.location.replace('/products');
         }
-    })
-})
+        console.log( document.cookie )})
+});

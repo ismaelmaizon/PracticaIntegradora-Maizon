@@ -4,12 +4,12 @@ import jwt from 'passport-jwt';
 
 
 const JWTStrategy = jwt.Strategy
-const extractJWT = jwt.ExtractJwt
+const ExtractJWT = jwt.ExtractJwt
 
 
 export const initializePassportJWT = () => {
     passport.use('jwt', new JWTStrategy({
-        jwtFromRequest: extractJWT.fromExtractors([cookieExtractor]),
+        jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
         secretOrKey: 'coderSecret'
     }, 
     async(jwtPayload, done) => {

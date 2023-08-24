@@ -33,13 +33,11 @@ router.post("/register", passport.authenticate('register', {session: false}) , a
 //Loguearse
 router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
   
-  //ya no necesitamos este codigo
-
   const { email, password } = req.body;
   console.log(email, password)
   const user = await userModel.findOne({ email: email, password: password });
   console.log(user)
-  if (!user) return res.redirect('/api/login')
+  if (!user) return res.redirect('/login')
   req.session.user = {
     name: user.first_name + user.last_name,
     email: user.email,
@@ -47,8 +45,8 @@ router.post("/login",passport.authenticate('login', {session: false}) , async (r
     role: user.role,
   };
 
-  let token = jwt.sign({email: req.body.email}, 'coderSecret', {expiresIn: "24h"});
-  res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success", message: req.session.user }) //esta parte "message: req.session.user" es necesario enviar para poder hacer la validacion del rol 
+  let token = jwt.sign({email, password }, 'coderSecret', {expiresIn: "24h"});
+  res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success"}) // "{httpOnly: false}" al estar en false nos permite poder ver la cookie en consola
 
 });
 
