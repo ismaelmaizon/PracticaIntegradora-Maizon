@@ -2,6 +2,7 @@ import { request, Router } from "express";
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
 import jwt from 'jsonwebtoken';
+import { passportCall } from "../utils.js";
 
 const router = Router();
 
@@ -33,9 +34,11 @@ router.post("/register", passport.authenticate('register', {session: false}) , a
 //Loguearse
 router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
   
-  const { email, password } = req.body;
-  console.log(email, password)
-  const user = await userModel.findOne({ email: email, password: password });
+  const userRec = req.body;
+  console.log('2222222222222222');
+  console.log(userRec)
+  
+  const user = await userModel.findOne({ email: userRec.email, password: userRec.password });
   console.log(user)
   if (!user) return res.redirect('/login')
   req.session.user = {
@@ -44,19 +47,27 @@ router.post("/login",passport.authenticate('login', {session: false}) , async (r
     age: user.age,
     role: user.role,
   };
-
-  let token = jwt.sign({email, password }, 'coderSecret', {expiresIn: "24h"});
+  let email = user.email
+  let role = user.role
+  let password = user.password
+  console.log('***********');
+  console.log(req.session.user);
+  
+  let token = jwt.sign({email, password, role }, 'coderSecret', {expiresIn: "24h"}); // " 'coderSecret' " FIRMA DEL TOKEN
   res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success"}) // "{httpOnly: false}" al estar en false nos permite poder ver la cookie en consola
+  // " 'coderCookie' " NOMBRE DE LA COOKIE QUE ESTAMOS GUARDANDO
 
 });
 
-
-router.get(
-  "/current",
-  passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    res.send(req.user);
+/*
+router.get("/current",passport.authenticate("jwt", { session: false }),(req, res) => {
+    res.send(req.user); // el " req.user " va a obtener la informacion del usuario que se guardo en el "jwt_Payload"
   }
+);
+*/
+router.get("/current", passportCall('jwt') ,(req, res) => {
+  res.send(req.user); // el " req.user " va a obtener la informacion del usuario que se guardo en el "jwt_Payload"
+}
 );
 
 // resetear contraseña

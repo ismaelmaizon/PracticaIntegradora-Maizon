@@ -42,20 +42,19 @@ routes.get('/login', (req, res) => {
 
 // 
 routes.get('/', passport.authenticate('jwt', {session: false}), async (req, res) => {
- 
-    const userEmail = req.user
+    const userEmail = req.session.user
     console.log(userEmail);
     console.log(userEmail.email);
     let user = await userModel.findOne({email: userEmail.email})
-    console.log(user.role);
+    console.log(user);
 
     if (user.role == 'admin') {
         res.render('products', {
-            user: req.user
+            user: req.session.user
         })
     }else {
         res.render('profile', {
-            user: req.user
+            user: req.session.user
         });
     }
 })

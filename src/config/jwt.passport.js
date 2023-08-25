@@ -8,13 +8,14 @@ const ExtractJWT = jwt.ExtractJwt
 
 
 export const initializePassportJWT = () => {
-    passport.use('jwt', new JWTStrategy({
+    passport.use(
+        'jwt', 
+        new JWTStrategy({
         jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]),
-        secretOrKey: 'coderSecret'
-    }, 
-    async(jwtPayload, done) => {
+        secretOrKey: 'coderSecret'}, // " 'coderSecret' " FIRMA DEL TOKEN
+    async(jwt_Payload, done) => {
         try{
-            return done(null, jwtPayload)
+            return done(null, jwt_Payload)
         }catch(e){
             return done(e)
         }
@@ -25,7 +26,7 @@ export const initializePassportJWT = () => {
 const cookieExtractor = (req) => {
     let token = null;
     if(req && req.cookies) {
-        token = req.cookies['coderCookie'];
+        token = req.cookies['coderCookie']; // " 'coderCookie' " NOMBRE DE LA COOKIE QUE ESTAMOS GUARDANDO
     }
     return token;
 }

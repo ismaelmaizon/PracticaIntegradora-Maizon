@@ -44,10 +44,13 @@ export const initializePassportLocal = () => {
     // ESTRATEGIA DE LOGIN
     passport.use('login', new localStrategy({usernameField: 'email'}, 
     async (username, password, done) => {
+        console.log('///////////////');
         console.log(username);
         console.log(password);
         try{
             const user = await userModel.findOne({ email: username })
+            console.log('11111111111');
+            console.log(user);
             if(!user){
                 console.log('usuario no existe');
                 return done(null, false)
