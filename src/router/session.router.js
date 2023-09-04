@@ -3,6 +3,7 @@ import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
 import jwt from 'jsonwebtoken';
 import { passportCall } from "../utils.js";
+import sessionController from "../controllers/session.controller.js";
 
 const router = Router();
 
@@ -65,10 +66,12 @@ router.get("/current",passport.authenticate("jwt", { session: false }),(req, res
   }
 );
 */
-router.get("/current", passportCall('jwt') ,(req, res) => {
-  res.send(req.user); // el " req.user " va a obtener la informacion del usuario que se guardo en el "jwt_Payload"
-}
-);
+router.get("/current", passportCall('jwt'), async (req, res) => { 
+  try {
+    sessionController.current(req, res) // el " req" tiene informacion del usuario que se guardo en el "jwt_Payload" enviado desde passportCall('jwt')
+  }catch(err){console.log(err )}
+});
+  
 
 // resetear contraseña
 router.post("/restartPassword", async (req, res) => {

@@ -30,7 +30,6 @@ routes.get('/products', (req, res) => {
     }
 );
 
-
 //LOGIN
 routes.get('/register', (req, res) => {
     res.render('register');
