@@ -1,6 +1,8 @@
 import { Router} from "express";
 import CartManager from "../dao/mongodb/cartMongo.dao.js";
 import CartController from "../controllers/carts.controller.js";
+import { passportCall } from "../utils.js";
+import sessionController from "../controllers/session.controller.js";
 
 
 
@@ -63,17 +65,25 @@ router.put('/:cid/product/:pid',  async (req, res) => {
 router.delete('/:cid/product/:pid', async(req, res) => {
     const idCart = req.params.cid;
     const idProduct = req.params.pid
-    await cartManager.deleteProductFromCart(idCart, idProduct)
+    await cartController.deleteProductFromCartController(idCart, idProduct)
     res.send({status: 'success'})
 } )
 
 // eliminar todos los productos del carrito
 router.delete('/:cid', async(req, res) => {
     const idCart = req.params.cid;
-    await cartManager.deleteAllProductsFromCart(idCart)
+    await cartController.deleteAllProductsFromCartController(idCart)
     res.send({status: 'success'})
 } )
 
+
+
+// finalizar el proceso de compra
+router.get('/:cid/purchase', passportCall('jwt'), async( req, res )=>{
+    const user = sessionController.current(req, res)
+    console.log(user);
+    await cartController.weekendShoppingController(req)
+})
 
 export default router;
 

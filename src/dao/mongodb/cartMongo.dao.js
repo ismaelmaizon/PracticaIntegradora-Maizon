@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import cartsModel from "./models/cart.model.js";
 import ProductManager from "./productMongo.dao.js";
+import TicketModel from "./models/ticket.model.js";
 
 export default class CartManager {
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
@@ -111,6 +112,14 @@ export default class CartManager {
         cart.products = [];
         await cart.save();
         return;
+    }
+
+
+    // finalizar el proceso de compra
+    async weekendShopping(cid){
+        const cart = await this.getCartById(cid)
+        console.log('weekendShopping');
+        console.log(cart.products);
     }
 }
 

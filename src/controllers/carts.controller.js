@@ -73,5 +73,12 @@ export default class cartController {
         const result = await this.cartController.deleteAllProductsFromCartService(cid)
         return result;
     }
+    // finalizar el proceso de compra
+    async weekendShoppingController(req){
+        const idCart = req.params.cid;
+        console.log(idCart);
+        const result = await this.cartController.weekendShoppingService(idCart);
+        return result;
+    }
 
 }

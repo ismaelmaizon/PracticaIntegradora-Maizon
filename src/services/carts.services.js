@@ -73,4 +73,10 @@ export default class cartServices {
         const result = await this.cartDao.deleteAllProductsFromCart(cid);
         return result;
     }
+
+
+    async weekendShoppingService(cid){
+        const result = await this.cartDao.weekendShopping(cid);
+        return result;
+    }
 }
