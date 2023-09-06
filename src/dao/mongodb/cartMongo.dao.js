@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 import cartsModel from "./models/cart.model.js";
 import ProductManager from "./productMongo.dao.js";
-import TicketModel from "./models/ticket.model.js";
 
 export default class CartManager {
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
@@ -123,6 +122,22 @@ export default class CartManager {
         console.log('weekendShopping');
         console.log(cart.products);
         console.log(user);
+        cart.products.map( async (c) =>{
+            let stock = c.product.stock
+            let idProd = c.product.id
+            console.log('***************');
+            console.log(c.product);
+            console.log('stock');
+            console.log(stock);
+            console.log('ID');
+            console.log(idProd);
+            console.log('quiantity');
+            console.log(c.quiantity);
+            
+            if (stock < c.quiantity){
+                await this.deleteProductFromCart(idCart, idProd)
+            }
+        })
     }
 }
 
