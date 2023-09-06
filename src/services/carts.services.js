@@ -36,8 +36,8 @@ export default class cartServices {
             return { error:'ese producto not exist'}
         };
 
-        result = await this.cartDao.addProductToCart(cid, pid)
-        return result;
+        const result2 = await this.cartDao.addProductToCart(cid, pid)
+        return result2;
     }
 
     // actualizar carrito
@@ -49,8 +49,8 @@ export default class cartServices {
         if (products.length === 0){
             return { error:'no estas agregando informacion'}
         }
-        result = await this.cartDao.updateCart(cid, products)
-        return result;
+        const result2 = await this.cartDao.updateCart(cid, products)
+        return result2;
     }
 
 
@@ -75,8 +75,8 @@ export default class cartServices {
     }
 
 
-    async weekendShoppingService(cid){
-        const result = await this.cartDao.weekendShopping(cid);
+    async weekendShoppingService(req, res){
+        const result = await this.cartDao.weekendShopping(req, res);
         return result;
     }
 }

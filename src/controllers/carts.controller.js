@@ -74,10 +74,8 @@ export default class cartController {
         return result;
     }
     // finalizar el proceso de compra
-    async weekendShoppingController(req){
-        const idCart = req.params.cid;
-        console.log(idCart);
-        const result = await this.cartController.weekendShoppingService(idCart);
+    async weekendShoppingController(req, res){
+        const result = await this.cartController.weekendShoppingService(req, res);
         return result;
     }
 

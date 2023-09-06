@@ -4,10 +4,12 @@ import local from 'passport-local';
 import { createHash } from "../utils.js"; 
 import { validatePassword } from "../utils.js";
 import { Strategy as GithubStrategy } from 'passport-github2';
-
+import CartController from "../controllers/carts.controller.js";
+import CartManager from "../dao/mongodb/cartMongo.dao.js";
 
 const localStrategy = local.Strategy
-
+let cartController = new CartController
+let cartManager = new CartManager
 
 
 export const initializePassportLocal = () => {
@@ -16,29 +18,39 @@ export const initializePassportLocal = () => {
 
     passport.use('register', new localStrategy(
         {passReqToCallback: true, usernameField: 'email'},
-        async(req, username, password, done) => {
-            const { first_name, last_name, age, email} = req.body;
+        async(req, username, passwordd, done) => {
+            const cart = {
+                            "products":[]
+                        }
+            const { first_name, last_name, age, email, password} = req.body;
             try {   
                 let user = await userModel.findOne({email: username})
                 if(user) {
                     console.log('user already exists');
                     return done(null, false)
-
                 }
-
+                
+                await cartController.addCartController(cart);
+                const newCart = await cartManager.getCarts();
+                let newIdCart = newCart[newCart.length - 1];
+                console.log('newIdCart');
+                console.log(newIdCart);
                 const newUser = {
                     first_name,
                     last_name,
-                    age,
                     email,
-                    password: createHash(password)
+                    age,
+                    password: password, //antes= password: createHash(password),
+                    cart: newIdCart
                 }
                 const result = await userModel.create(newUser)
                 return done(null, result)
             } catch (error) {
+                console.log(error);
                 return done('error al registrar usuairo')
             }
-            } ))
+        } 
+        ))
     
 
     // ESTRATEGIA DE LOGIN

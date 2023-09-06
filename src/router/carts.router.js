@@ -2,7 +2,6 @@ import { Router} from "express";
 import CartManager from "../dao/mongodb/cartMongo.dao.js";
 import CartController from "../controllers/carts.controller.js";
 import { passportCall } from "../utils.js";
-import sessionController from "../controllers/session.controller.js";
 
 
 
@@ -15,7 +14,6 @@ let cartController = new CartController
 router.post('/', async (req, res) => {
     const cart = req.body
     await cartController.addCartController(cart);
-
     res.send({status: 'carrito creado'})
 })
 
@@ -80,9 +78,8 @@ router.delete('/:cid', async(req, res) => {
 
 // finalizar el proceso de compra
 router.get('/:cid/purchase', passportCall('jwt'), async( req, res )=>{
-    const user = sessionController.current(req, res)
-    console.log(user);
-    await cartController.weekendShoppingController(req)
+    await cartController.weekendShoppingController(req, res)
+    res.send({status: 'success'})
 })
 
 export default router;

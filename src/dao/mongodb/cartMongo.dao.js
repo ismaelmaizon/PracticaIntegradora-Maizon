@@ -116,10 +116,13 @@ export default class CartManager {
 
 
     // finalizar el proceso de compra
-    async weekendShopping(cid){
-        const cart = await this.getCartById(cid)
+    async weekendShopping(req, res){
+        const user = req.user
+        const idCart = req.params.cid
+        const cart = await this.getCartById(idCart)
         console.log('weekendShopping');
         console.log(cart.products);
+        console.log(user);
     }
 }
 
