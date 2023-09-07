@@ -39,7 +39,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), rolesMiddleware
 router.put('/:pid', async(req, res) => {
     const product = req.body;
     const pid = req.params.pid;
-    await productManager.updateProduct(pid, product) 
+    await productController.updateProductControllerById(pid, product)
     
     res.send({status: 'success'});
 

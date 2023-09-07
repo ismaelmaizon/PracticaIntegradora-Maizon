@@ -100,6 +100,11 @@ export default class CartManager {
         const cart = await this.getCartById(cid);
         console.log(cid);
         console.log(pid);
+        /*
+        cart.products.map( (product) =>{
+            console.log('*******');
+            console.log(product.id);
+        })*/
         cart.products.pull(pid);
         await cart.save();
         return;
@@ -124,18 +129,29 @@ export default class CartManager {
         console.log(user);
         cart.products.map( async (c) =>{
             let stock = c.product.stock
-            let idProd = c.product.id
-            console.log('***************');
-            console.log(c.product);
-            console.log('stock');
-            console.log(stock);
-            console.log('ID');
-            console.log(idProd);
-            console.log('quiantity');
-            console.log(c.quiantity);
+            let idProd = c.id
             
             if (stock < c.quiantity){
                 await this.deleteProductFromCart(idCart, idProd)
+            }else{
+                let prod = await this.productManager.getProductById(c.product.id);
+                console.log('product');
+                console.log(prod.title);
+                console.log(prod.stock);
+                let newStock = prod.stock - c.quiantity
+                console.log('newstock');
+                console.log(newStock);
+                
+                prod = {
+                    "title" : prod.title,
+                    "description": prod.description,
+                    "code": prod.code,
+                    "price": prod.price,
+                    "status": prod.status,
+                    "stock": newStock,
+                    "category": prod.category
+                }
+                await this.productManager.updateProduct(c.product.id, prod);
             }
         })
     }

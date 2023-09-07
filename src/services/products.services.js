@@ -36,12 +36,12 @@ export default class ProductServices {
 
     // actualizar producto
     async updateProductServiceById(id, updateProduct){
-        const result = await this.productDao.getProductById( id)
+        const result = await this.productDao.getProductById(id)
         if ( !result ) {
             return { error: 'Product not exist'};
         }
-        result = await this.productDao.updateProduct( id, updateProduct);
-        return result;
+        await this.productDao.updateProduct(id, updateProduct);
+        return;
 
     }
 

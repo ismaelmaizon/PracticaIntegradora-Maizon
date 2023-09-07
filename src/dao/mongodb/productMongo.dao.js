@@ -34,6 +34,7 @@ export default class ProductManager {
 
     // actualizar producto
     async updateProduct(id, updateProduct){
+        console.log(updateProduct);
         let result = await productsModel.updateOne({_id : id}, {$set: updateProduct});
         return result
     }
