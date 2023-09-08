@@ -1,11 +1,13 @@
 import mongoose from "mongoose";
 import cartsModel from "./models/cart.model.js";
 import ProductManager from "./productMongo.dao.js";
+import TicketMananger from "./ticketMongo.dao.js";
 
 export default class CartManager {
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
     
     productManager = new ProductManager;
+    ticketMananger = new TicketMananger;
     
     // creando carrito
     async addCart(cart){
@@ -100,11 +102,6 @@ export default class CartManager {
         const cart = await this.getCartById(cid);
         console.log(cid);
         console.log(pid);
-        /*
-        cart.products.map( (product) =>{
-            console.log('*******');
-            console.log(product.id);
-        })*/
         cart.products.pull(pid);
         await cart.save();
         return;
@@ -121,6 +118,7 @@ export default class CartManager {
 
     // finalizar el proceso de compra
     async weekendShopping(req, res){
+        let amount = 0
         const user = req.user
         const idCart = req.params.cid
         const cart = await this.getCartById(idCart)
@@ -133,7 +131,9 @@ export default class CartManager {
             
             if (stock < c.quiantity){
                 await this.deleteProductFromCart(idCart, idProd)
+                
             }else{
+                amount = amount + c.product.price
                 let prod = await this.productManager.getProductById(c.product.id);
                 console.log('product');
                 console.log(prod.title);
@@ -152,8 +152,27 @@ export default class CartManager {
                     "category": prod.category
                 }
                 await this.productManager.updateProduct(c.product.id, prod);
+                
             }
         })
+        await cart.save();
+        const data = new Date()
+        console.log('???????????????????');
+        console.log(cart);
+        console.log(data);
+        console.log(amount);
+        
+
+        const ticket = {
+            "code": '000000012',
+            "fecha": data,
+            "products": cart.products,
+            "amount": amount,
+            "purchaser": user.email
+        }
+
+        await this.ticketMananger.addTk(ticket);
+
     }
 }
 

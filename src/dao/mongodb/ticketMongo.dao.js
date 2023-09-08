@@ -1,14 +1,20 @@
 import mongoose from "mongoose";
-import CartController from "../../controllers/carts.controller.js";
+import ticketModel from "./models/ticket.model.js";
+
 
 export default class TicketMananger {
 
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
 
-    cartController = new CartController;
-
-    async createTicket(cart){
-    
-        }
+    // creando ticket
+    async addTk(tk){
+        let result = await ticketModel.create(tk);
+        return result
     }
+
+    async addTk(){
+        let result = await ticketModel.find()
+        return result
+    }
+}
 
