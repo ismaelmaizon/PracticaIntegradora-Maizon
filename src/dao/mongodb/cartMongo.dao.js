@@ -156,7 +156,7 @@ export default class CartManager {
             }
         })
         await cart.save();
-        const data = new Date()
+        const data = new Date().toLocaleTimeString
         console.log('???????????????????');
         console.log(cart);
         console.log(data);

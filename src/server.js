@@ -27,6 +27,7 @@ import { initializePassportLocal } from "./config/local.passport.js";
 
 
 import { proceso } from "./config/config.js";
+import { addLogger } from "../logger.config.js";
 
 
 const app = express();
@@ -49,6 +50,16 @@ initializePassportJWT();
 initializePassportLocal();
 app.use(passport.initialize())
 proceso();
+
+
+// middleware de logger
+app.use(addLogger)
+
+app.get('/', (req, res) => {
+    req.logger.warn('Alerta')
+    res.send({message: 'Prueba de logger'})
+})
+
 
 // este scrip sirve para conectar las sesiones con nuestra base de datos
 app.use(
