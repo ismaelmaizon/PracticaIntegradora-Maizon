@@ -47,7 +47,8 @@ export const initializePassportLocal = () => {
                 return done(null, result)
             } catch (error) {
                 console.log(error);
-                return done('error al registrar usuairo')
+                req.logger.error(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()} -- error al registrar usuairo `)
+                return done({ message: 'error al registrar usuairo'})
             }
         } 
         ))

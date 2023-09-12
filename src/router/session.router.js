@@ -1,34 +1,16 @@
-import { request, Router } from "express";
+import { Router } from "express";
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
 import jwt from 'jsonwebtoken';
 import { passportCall } from "../utils.js";
 import sessionController from "../controllers/session.controller.js";
 
+
 const router = Router();
 
 // Registrarse
-router.post("/register", passport.authenticate('register', {session: false}) , async (req, res) => {
-  /*
-  ya no necesitamos este codigo
-
-  const { first_name, last_name, email, age, password, rol = "usuario"} = req.body;
-  const exist = await userModel.findOne({ email });
-
-  if (exist)
-    return res
-      .status(400)
-      .send({ status: "error", message: "usuario ya registrado" });
-
-  let result = await userModel.create({
-    first_name,
-    last_name,
-    email,
-    age,
-    password,
-    rol
-  });*/
-
+router.post("/register", passport.authenticate('register', {session: false}),async (req, res) => {
+  req.logger.info(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`)
   res.send({ status: "success", message: "usuario  registrado" });
 });
 
