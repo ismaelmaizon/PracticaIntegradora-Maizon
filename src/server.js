@@ -122,4 +122,4 @@ io.on('connection', async (socket) => {
 app.use('/', viewsRouter);
 app.use('/api/products', routerProducts)
 app.use('/api/carts', routerCarts)
-app.use('/api/sessions', sessionRouter)
+app.use('/api/sessions',sessionRouter)

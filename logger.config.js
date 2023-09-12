@@ -20,5 +20,6 @@ export const addLogger = (req, res, next) => {
   req.logger.http(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
   req.logger.info(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
   //req.logger.error(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
+
   next()
 };

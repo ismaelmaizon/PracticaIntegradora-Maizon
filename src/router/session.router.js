@@ -4,13 +4,14 @@ import passport from "passport";
 import jwt from 'jsonwebtoken';
 import { passportCall } from "../utils.js";
 import sessionController from "../controllers/session.controller.js";
+import { addLogger } from "../../logger.config.js";
 
 
 const router = Router();
+router.use(addLogger)
 
 // Registrarse
 router.post("/register", passport.authenticate('register', {session: false}),async (req, res) => {
-  req.logger.info(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`)
   res.send({ status: "success", message: "usuario  registrado" });
 });
 

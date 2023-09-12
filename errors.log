@@ -1,3 +1,5 @@
 error: POST en /api/sessions/register -- 15:23:43
 error: GET en /register -- 15:41:26
 error: POST en /register -- 15:49:31 -- error al registrar usuairo 
+error: GET en /register -- 15:59:21
+error: POST en /register -- 15:59:32 -- error al registrar usuairo 
