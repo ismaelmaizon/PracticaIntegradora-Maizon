@@ -11,10 +11,10 @@ export default class TicketMananger {
         let result = await ticketModel.create(tk);
         return result
     }
-
+    /*
     async addTk(){
         let result = await ticketModel.find()
         return result
-    }
+    }*/
 }
 

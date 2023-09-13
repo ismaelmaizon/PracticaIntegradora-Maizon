@@ -26,11 +26,12 @@ export default class ProductServices {
     }
 
     // ver un product
-    async getProductServiceById( id, product ) {
-        const result = await this.productDao.getProductById( id, product );
+    async getProductServiceById( id) {
+        const result = await this.productDao.getProductById( id);
+        /*
         if ( !result ) {
             return { error: 'Product not exist'};
-        }
+        }*/
         return result;
     }    
 

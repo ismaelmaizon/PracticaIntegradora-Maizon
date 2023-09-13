@@ -28,6 +28,7 @@ import { initializePassportLocal } from "./config/local.passport.js";
 
 import { proceso } from "./config/config.js";
 import { addLogger } from "../logger.config.js";
+import { rolesMiddlewareUser } from "./router/middlewares/roles.middlewares.js";
 
 
 const app = express();
@@ -94,7 +95,7 @@ io.on('connection', async (socket) => {
 
     //socket.emit('update-productos', await productManager.getProduct())
     
-    socket.on('message', async(data) => {
+    socket.on('message', passport.authenticate('jwt', {session: false}), rolesMiddlewareUser, async(data) => {
         mensajes.push(data);
 
         console.log(data);
@@ -105,7 +106,7 @@ io.on('connection', async (socket) => {
     })
 
     // ingreso nuevo usuario
-    socket.on('authenticatedUser', (data) => { 
+    socket.on('authenticatedUser', passport.authenticate('jwt', {session: false}), rolesMiddlewareUser, (data) => { 
         console.log('se conecto:' + data);
         socket.broadcast.emit( 'ingreso', data);
 

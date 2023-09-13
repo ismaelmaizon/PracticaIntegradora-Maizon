@@ -73,7 +73,9 @@ export const initializePassportLocal = () => {
             }
             console.log(user);
             return done(null, user)
-        } catch (e) {console.error(e);}
+        } catch (e) {
+            console.error(e);
+        }
     }
     ))        
 

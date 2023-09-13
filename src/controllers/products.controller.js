@@ -20,9 +20,6 @@ export default class ProductController {
 
     // ver un product
     async getProductControllerById( id) {
-        if (!id){
-            return {error : 'id vacio'};
-        }
         const result = await this.productServices.getProductServiceById(id);
         return result;
     }  

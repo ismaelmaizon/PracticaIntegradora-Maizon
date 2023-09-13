@@ -11,12 +11,12 @@ const router = Router();
 router.use(addLogger)
 
 // Registrarse
-router.post("/register", passport.authenticate('register', {session: false}),async (req, res) => {
+router.post("/register", passport.authenticate('register', {session: false}), addLogger , async (req, res) => {
   res.send({ status: "success", message: "usuario  registrado" });
 });
 
 //Loguearse
-router.post("/login",passport.authenticate('login', {session: false}) , async (req, res) => {
+router.post("/login", passport.authenticate('login', {session: false}) ,addLogger, async (req, res) => {
   
   const userRec = req.body;
   console.log('2222222222222222');
@@ -24,7 +24,6 @@ router.post("/login",passport.authenticate('login', {session: false}) , async (r
   
   const user = await userModel.findOne({ email: userRec.email, password: userRec.password });
   console.log(user)
-  if (!user) return res.redirect('/login')
   req.session.user = {
     name: user.first_name + user.last_name,
     email: user.email,

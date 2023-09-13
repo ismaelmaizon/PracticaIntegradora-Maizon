@@ -3,6 +3,9 @@
 
 // lado del front
 
+import passport from "passport";
+import { rolesMiddlewareUser } from "../../router/middlewares/roles.middlewares";
+
 const socket = io();
 let user;
 
@@ -41,7 +44,7 @@ chatbox.addEventListener('keyup', (evt) => {
 
 
 // para imprimrir lo que escriben
-socket.on('imprimir', async (data) =>{
+socket.on('imprimir',passport.authenticate('jwt', {session: false}), rolesMiddlewareUser, async (data) =>{
     console.log(data);
     let mensajes = '';
     data.forEach( (msj) => {
@@ -52,7 +55,7 @@ socket.on('imprimir', async (data) =>{
 
 
 // aviso de ingreso nuevo
-socket.on('ingreso', (data) => {
+socket.on('ingreso',passport.authenticate('jwt', {session: false}), rolesMiddlewareUser, (data) => {
     if (!user) return
     Swal.fire({
         toast: true,

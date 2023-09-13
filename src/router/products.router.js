@@ -36,7 +36,7 @@ router.post('/', passport.authenticate('jwt', {session: false}), rolesMiddleware
 } )
 
 // actualizar product
-router.put('/:pid', async(req, res) => {
+router.put('/:pid',passport.authenticate('jwt', {session: false}), rolesMiddlewareAdmin, async(req, res) => {
     const product = req.body;
     const pid = req.params.pid;
     await productController.updateProductControllerById(pid, product)
@@ -46,7 +46,7 @@ router.put('/:pid', async(req, res) => {
 })
 
 // eliminar product
-router.delete('/:pid', async(req, res) => {
+router.delete('/:pid',passport.authenticate('jwt', {session: false}), rolesMiddlewareAdmin, async(req, res) => {
     const pid = req.params.pid;
     console.log(pid);
 

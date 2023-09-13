@@ -27,17 +27,24 @@ export default class cartServices {
 
     // agregar un producto al carrito
     async addProductToCartService(cid, pid){
+        let response = {}
         const result = await this.cartDao.getCartById(cid);
         const result1 = await this.productDao.getProductById(pid);
-        if (!result) {
-            return { error:'carrito al que hace referencia not exist'}
-        };
-        if (!result1) {
-            return { error:'ese producto not exist'}
-        };
-
+        if(result.statusCode == 404 || result1.statusCode == 404) {
+            response.statusCode = 404
+            response.message = 'id card o id product no existe'
+            return response;
+        }
+        console.log(result.statusCode);
+        console.log(result1.statusCode);
+        if(result.statusCode == 500 || result1.statusCode == 500) {
+            response.statusCode = 500
+            response.message = 'Internal server error'
+            return response;
+        }
         const result2 = await this.cartDao.addProductToCart(cid, pid)
-        return result2;
+        response = result2
+        return response
     }
 
     // actualizar carrito

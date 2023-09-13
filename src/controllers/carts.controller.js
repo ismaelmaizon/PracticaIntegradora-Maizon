@@ -23,12 +23,7 @@ export default class cartController {
 
     // agregar un producto al carrito
     async addProductToCartController(cid, pid){
-        if(!cid){
-            return { error:'id de carrito esta vacio' }
-        }
-        if(!pid){
-            return { error:'id de producto esta vacio' }
-        }
+        
         const result = await this.cartController.addProductToCartService(cid, pid)
         return result
     }
