@@ -50,6 +50,7 @@ app.use(cookieParser());
 initializePassportJWT();
 initializePassportLocal();
 app.use(passport.initialize())
+// Entorno de desarrollo
 proceso();
 
 

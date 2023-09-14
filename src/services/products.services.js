@@ -1,3 +1,4 @@
+import { response } from 'express';
 import ProductDao from '../dao/mongodb/productMongo.dao.js'
 
 
@@ -22,38 +23,62 @@ export default class ProductServices {
     // ver un product
     async getProductServiceById( req) {
         const result = await this.productDao.getProductById( req);
-        /*
-        if ( !result ) {
-            return { error: 'Product not exist'};
-        }*/
         return result;
     }    
     // añadir product
-    async createProductService( product ) {
-        const result = await this.productDao.addProduct( product );
+    async createProductService( req ) {
+        const result = await this.productDao.addProduct( req );
         return result;
     }
 
 
     // actualizar producto
-    async updateProductServiceById(id, updateProduct){
-        const result = await this.productDao.getProductById(id)
-        if ( !result ) {
-            return { error: 'Product not exist'};
+    async updateProductServiceById(req){
+        const product = req.body;
+        const pid = req.params.pid;
+        let response = {}
+        try{
+            let result = await this.productDao.getProductById(req)// se pasa en este caso el req dado que la funcion getproductById recibe un req y luego obtiene el ID
+            console.log(result);
+            if(result == 404){
+                response.statusCode = 404
+                response.message = 'producto no encontrado'
+                response.product = null
+                return response
+            }else{
+                let result1 = await this.productDao.updateProduct(pid, product);
+                return result1;
+            }
+        }catch(error){
+            console.log(error);
+            response.statusCode = 500
+            response.message = 'internal server error'
+            response.product = null
+            return response
         }
-        await this.productDao.updateProduct(id, updateProduct);
-        return;
-
     }
 
     // eliminar producto
-    async deleteProductServicesById(id){
-        console.log(id);
-        const result = await this.productDao.getProductById(id)
-        if ( !result ) {
-            return { error: 'Product not exist'};
+    async deleteProductServicesById(req){
+        let response = {}
+        try{
+            let result = await this.productDao.getProductById(req)// se pasa en este caso el req dado que la funcion getproductById recibe un req y luego obtiene el ID
+            console.log(result);
+            if(result.statusCode == 404){
+                response.statusCode = 404
+                response.message = 'producto no encontrado'
+                response.product = null
+                return response
+            }else{
+                let result1 = await this.productDao.deleteProduct(req)
+                return result1;
+            }
+        }catch(error){
+            console.log(error);
+            response.statusCode = 500
+            response.message = 'internal server error'
+            response.product = null
+            return response
         }
-        result = await this.productDao.deleteProduct(id)
-        return result
     }
 }

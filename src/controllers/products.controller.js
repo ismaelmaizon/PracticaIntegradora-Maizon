@@ -26,28 +26,40 @@ export default class ProductController {
     }  
     
     // añadir product
-    async createProductController( product ) {
-        const result = await this.productServices.createProductService(product);
+    async createProductController(req) {
+        const result = await this.productServices.createProductService(req);
+        if (result.statusCode === 200){
+            req.logger.http(`${req.method} en api/products${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/products${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
+        }
         return result;
 
     }
 
     // actualizar product
-    async updateProductControllerById(id, updateProduct) {
-        if ( !id ) {
-            return { error: 'id vacio'};
+    async updateProductControllerById(req) {
+        const result = await this.productServices.updateProductServiceById(req);
+        if (result.statusCode == 200){
+            req.logger.debug(`${req.method} en api/products${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/products${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/products${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        const result = await this.productServices.updateProductServiceById(id, updateProduct);
         return result;
     }
 
     // eliminar producto
-    async deleteProductControllerById(id){
-        
-        if ( !id ) {
-            return { error: 'id vacio'};
+    async deleteProductControllerById(req){
+        const result = await this.productServices.deleteProductServicesById(req);
+        if (result.statusCode == 200){
+            req.logger.debug(`${req.method} en api/products${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/products${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/products${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        const result = await this.productServices.deleteProductServicesById(id);
         return result
     }
 }
