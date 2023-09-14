@@ -17,12 +17,13 @@ let productController = new ProductController
 router.get('/', passport.authenticate('jwt', {session: false}), rolesMiddlewareAdmin,  async (req, res) => {
     const result = await productController.getProductController(req)
     console.log(result);
+    req.logger.http(`${req.method} en /api/products${req.url} -- ${new Date().toLocaleTimeString()}`);
     res.send({result})
 })
+
 // ver un product
 router.get('/:pid',  async (req, res) => {
-    const id = req.params.pid
-    const product = await productController.getProductControllerById(id)
+    const product = await productController.getProductControllerById(req)
     res.send(product)
 })
 
@@ -30,9 +31,9 @@ router.get('/:pid',  async (req, res) => {
 // añadiendo product
 router.post('/', passport.authenticate('jwt', {session: false}), rolesMiddlewareAdmin ,async (req, res) => {
     const newProduct = req.body;
-    await productController.createProductController(newProduct)
+    let result = await productController.createProductController(newProduct)
     console.log(newProduct);
-    res.send({status: 'se cargo el product'})
+    res.send(result)
 } )
 
 // actualizar product

@@ -3,3 +3,5 @@ error: GET en /register -- 15:41:26
 error: POST en /register -- 15:49:31 -- error al registrar usuairo 
 error: GET en /register -- 15:59:21
 error: POST en /register -- 15:59:32 -- error al registrar usuairo 
+error: GET en api/products/650263389f8c00579ae3 -- status: 500 -- 23:50:25
+error: GET en api/products/650263389f8c00579ae31 -- status: 500 -- 00:03:19

@@ -21,7 +21,7 @@ const prodLogger = winston.createLogger({
 export const addLogger = (req, res, next) => {
   req.logger = process.env.ENVIRONMENT == "PRODUCTION" ? prodLogger : devLogger;
   
-  req.logger.http(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
+  //req.logger.http(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
   //req.logger.info(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
   //req.logger.error(`${req.method} en ${req.url} -- ${new Date().toLocaleTimeString()}`);
 

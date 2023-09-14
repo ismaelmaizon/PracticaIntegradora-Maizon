@@ -7,12 +7,6 @@ export default class ProductServices {
         this.productDao = new ProductDao();
     }
 
-    // añadir product
-    async createProductService( product ) {
-        const result = await this.productDao.addProduct( product );
-        return result;
-    }
-
     // ver products
     async getProductService( req ) {
         //limit = 10, page = 1, sort = 0, filtro = null, filValor = null
@@ -26,14 +20,20 @@ export default class ProductServices {
     }
 
     // ver un product
-    async getProductServiceById( id) {
-        const result = await this.productDao.getProductById( id);
+    async getProductServiceById( req) {
+        const result = await this.productDao.getProductById( req);
         /*
         if ( !result ) {
             return { error: 'Product not exist'};
         }*/
         return result;
     }    
+    // añadir product
+    async createProductService( product ) {
+        const result = await this.productDao.addProduct( product );
+        return result;
+    }
+
 
     // actualizar producto
     async updateProductServiceById(id, updateProduct){
