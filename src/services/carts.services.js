@@ -17,11 +17,8 @@ export default class cartServices {
     }
 
     // ver un carrito
-    async getCartServiceById(id){
-        const result = await this.cartDao.getCartById(id);
-        if(!result){
-            return { error:'not exist cart' }
-        }
+    async getCartServiceById(req){
+        const result = await this.cartDao.getCartById(req);
         return result
     }
 
@@ -80,7 +77,6 @@ export default class cartServices {
         const result = await this.cartDao.deleteAllProductsFromCart(cid);
         return result;
     }
-
 
     async weekendShoppingService(req, res){
         const result = await this.cartDao.weekendShopping(req, res);

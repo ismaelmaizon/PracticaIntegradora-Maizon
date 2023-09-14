@@ -27,9 +27,8 @@ router.get('/',  async (req, res) => {
 
 // ver un carrito
 router.get('/:cid',  async (req, res) => {
-    const cid = req.params.cid
-    const cart = await cartController.getCartControllerById(cid);
-    res.send(cart)
+    const result = await cartController.getCartControllerById(req);
+    res.send(result)
 })
 
 // agregar un producto al carrito

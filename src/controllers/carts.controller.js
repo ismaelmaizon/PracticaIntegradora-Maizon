@@ -13,17 +13,20 @@ export default class cartController {
     }
 
     // ver un carrito
-    async getCartControllerById(id){
-        if(!id){
-            return { error:'id esta vacio' }
+    async getCartControllerById(req){
+        const result = await this.cartController.getCartServiceById(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        const result = await this.cartController.getCartServiceById(id)
-        return result
+        return result;
     }
 
     // agregar un producto al carrito
     async addProductToCartController(cid, pid){
-        
         const result = await this.cartController.addProductToCartService(cid, pid)
         return result
     }

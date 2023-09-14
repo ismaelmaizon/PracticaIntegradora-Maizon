@@ -15,3 +15,5 @@ error: PUT en api/products/6502246b0186fc70f0e5b364 -- status: 500 -- 10:23:44
 error: DELETE en api/products/650263389f8c00579ae32 -- status: 500 -- 11:16:45
 error: DELETE en api/products/650263389f8c00579ae32 -- status: 500 -- 11:16:58
 error: DELETE en api/products/650263389f8c00579ae32 -- status: 500 -- 11:17:02
+error: GET en api/products/6501c2e2edc7f59e7452f -- status: 500 -- 17:14:59
+error: GET en api/carts/6501c2e2edc7f59e7452f -- status: 500 -- 17:15:58

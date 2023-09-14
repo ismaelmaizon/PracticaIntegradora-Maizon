@@ -19,10 +19,10 @@ export default class CartManager {
         return result
     }
     //ver un carrito
-    async getCartById(id){
+    async getCartById(req){
+        const cid = req.params.cid
         try {
-            const cart = await cartsModel.findOne({ _id: id }).populate('products.product');
-            
+            const cart = await cartsModel.findOne({ _id: cid }).populate('products.product');
             if (!cart) {
                 return {
                     statusCode: 404, // o el código de estado que desees para "no encontrado"
@@ -30,7 +30,6 @@ export default class CartManager {
                     cart: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
                 };
             }
-    
             return {
                 statusCode: 200, // o el código de estado que desees para "éxito"
                 message: "Cart found", // un mensaje de éxito apropiado
@@ -44,13 +43,6 @@ export default class CartManager {
             };
         }
     }
-    
-    //solo para usar al agregar al carrito   
-    /*
-    async getCartById(id){
-        let result = await cartsModel.findOne({_id : id}).populate('products.product'); ;
-        return result
-    }    */
 
     // agregar un producto al carrito
     async addProductToCart(cid, pid){
@@ -92,6 +84,8 @@ export default class CartManager {
             return response;
         }catch (err) {
             console.error(err); // Imprime el error en la consola para depuración
+            response.statusCode = 500
+            response.message = 'internal server error'
         }
     }
     
