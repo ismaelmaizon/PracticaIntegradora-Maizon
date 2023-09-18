@@ -26,29 +26,41 @@ export default class cartController {
     }
 
     // agregar un producto al carrito
-    async addProductToCartController(cid, pid){
-        const result = await this.cartController.addProductToCartService(cid, pid)
-        return result
+    async addProductToCartController(req){
+        const result = await this.cartController.addProductToCartService(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
+        }
+        return result;
     }
     // actualizar carrito
-    async updateCartController(cid, products){
-        if(!cid){
-            return { error:'id de carrito esta vacio' }
+    async updateCartController(req){
+        const result = await this.cartController.updateCartService(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        const result = await this.cartController.updateCartService(cid, products)
-        return result
+        return result;
     }
 
     // actualizar cantidad de producto en el carrito
-    async updateQuantityProductController(cid, pid, quantity){
-        if(!cid){
-            return { error:'id de carrito esta vacio' }
+    async updateQuantityProductController(req){
+        const result = await this.cartController.updateQuantityProductService(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        if(!pid){
-            return { error:'id de producto esta vacio' }
-        }
-        const result = await this.cartController.updateQuantityProductService(cid, pid, quantity)
-        return result
+        return result;
     }
 
     // eliminar un producto del carrito

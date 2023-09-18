@@ -23,48 +23,53 @@ export default class cartServices {
     }
 
     // agregar un producto al carrito
-    async addProductToCartService(cid, pid){
+    async addProductToCartService(req){
         let response = {}
-        const result = await this.cartDao.getCartById(cid);
-        const result1 = await this.productDao.getProductById(pid);
+        const result = await this.cartDao.getCartById(req);
+        const result1 = await this.productDao.getProductById(req);
         if(result.statusCode == 404 || result1.statusCode == 404) {
             response.statusCode = 404
             response.message = 'id card o id product no existe'
             return response;
         }
-        console.log(result.statusCode);
-        console.log(result1.statusCode);
+        //console.log(result.statusCode);
+        //console.log(result1.statusCode);
         if(result.statusCode == 500 || result1.statusCode == 500) {
             response.statusCode = 500
             response.message = 'Internal server error'
             return response;
         }
-        const result2 = await this.cartDao.addProductToCart(cid, pid)
+        const result2 = await this.cartDao.addProductToCart(req)
         response = result2
         return response
     }
 
     // actualizar carrito
-    async updateCartService(cid, products){
-        const result = await this.cartDao.getCartById(cid);
-        if (!result) {
-            return { error:'carrito al que hace referencia not exist'}
-        };
-        if (products.length === 0){
-            return { error:'no estas agregando informacion'}
-        }
-        const result2 = await this.cartDao.updateCart(cid, products)
-        return result2;
+    async updateCartService(req){
+        const result = await this.cartDao.updateCart(req)
+        return result;
     }
 
 
     // actualizar cantidad de producto en el carrito
-    async updateQuantityProductService(cid, pid, quantity){
-        if (quantity === undefined){
-            return { error:'catidad mal cargada'}
+    async updateQuantityProductService(req){
+        let response = {}
+        const result = await this.cartDao.getCartById(req);
+        const result1 = await this.productDao.getProductById(req);
+        if(result.statusCode == 404 || result1.statusCode == 404) {
+            response.statusCode = 404
+            response.message = 'id card o id product no existe'
+            return response;
         }
-        const result = await this.cartDao.updateQuantityProduct(cid, pid, quantity);
-        return result;
+        //console.log(result.statusCode);
+        //console.log(result1.statusCode);
+        if(result.statusCode == 500 || result1.statusCode == 500) {
+            response.statusCode = 500
+            response.message = 'Internal server error'
+            return response;
+        }
+        const result2 = await this.cartDao.updateQuantityProduct(req);
+        return result2;
     }
 
     // eliminar un producto del carrito

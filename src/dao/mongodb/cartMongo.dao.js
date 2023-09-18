@@ -14,6 +14,7 @@ export default class CartManager {
         let result = await cartsModel.create(cart);
         return result
     }
+    //ver todos los carrito
     async getCarts(){
         let result = await cartsModel.find();
         return result
@@ -45,11 +46,11 @@ export default class CartManager {
     }
 
     // agregar un producto al carrito
-    async addProductToCart(cid, pid){
+    async addProductToCart(req){
         let response = {}
         try{
-            const product = await this.productManager.getProductById(pid);
-            const cart = await this.getCartById(cid);
+            const product = await this.productManager.getProductById(req);
+            const cart = await this.getCartById(req);
             console.log(product.product);
             console.log(cart.cart);
             let productos = cart.cart.products
@@ -64,15 +65,16 @@ export default class CartManager {
                 console.log('else');
                 cart.cart.products.map((product) => {
                     console.log(product.product._id);
-                    if (product.product._id == pid) {
+                    if (product.product._id == req.params.pid) {
                         product.quiantity++; 
                         console.log(product.quiantity);
                         exist = true;
                     }
                 })
-                
                 if (exist) {
-                    await cartsModel.updateOne( {_id : cid}, {$set: { products : cart.products }} )
+                    console.log(cart.cart.products);
+                    await cartsModel.updateOne( {_id : req.params.cid}, {$set: { products : cart.products }} )
+                    cart.cart.save()
                 }else{
                     cart.cart.products.push({ product: product.product});
                     cart.cart.save();
@@ -90,35 +92,72 @@ export default class CartManager {
     }
     
     // actualizar carrito
-    async updateCart(cid, products){
-        const cart = await this.getCartById(cid);
-        console.log(cart);
-        cart.products = products;
-        await cart.save();
-        return;
+    async updateCart(req){
+        const products = req.body
+        try {
+            const cart = await cartsModel.findOne({ _id: req.params.cid }).populate('products.product');
+            if (!cart) {
+                return {
+                    statusCode: 404, // o el código de estado que desees para "no encontrado"
+                    message: "Cart not found", // un mensaje de error apropiado
+                    cart: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
+                };
+            }
+            cart.products = products;
+            console.log(cart);
+            await cart.save();
+            return {
+                statusCode: 200, // o el código de estado que desees para "éxito"
+                message: "Cart actualizado", // un mensaje de éxito apropiado
+                cart: cart, // el carrito encontrado
+            };
+        } catch (error) {
+            return {
+                statusCode: 500, // o el código de estado que desees para "error del servidor"
+                message: "Internal server error", // un mensaje de error de servidor apropiado
+                error: error, // opcional: puedes incluir el objeto de error si es relevante
+            };
+        }
     }
     
     // actualizar cantidad de producto en el carrito
-    async updateQuantityProduct(cid, pid, quantity){
-        const cart = await this.getCartById(cid);
-        console.log(quantity);
+    async updateQuantityProduct(req){
+        const quantity = req.body
+        console.log(quantity.quantity);
         let exist = false;
-        cart.products.map((product) => {
-
-            if (product.product._id == pid) {
-                product.quiantity = quantity; 
-                console.log(product.quiantity);
-                exist = true;
+        try{
+            const cart = await this.getCartById(req);
+            if (!cart) {
+                return {
+                    statusCode: 404, // o el código de estado que desees para "no encontrado"
+                    message: "Cart not found", // un mensaje de error apropiado
+                    cart: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
+                };
+            }
+            cart.cart.products.map((product) => {
+                if (product.product._id == req.params.pid) {
+                    product.quiantity = quantity.quantity; 
+                    console.log(product.quiantity);
+                    exist = true;
+                }
+            })
+            if (exist) {
+                await cartsModel.updateOne( {_id : req.params.cid}, {$set: { products : cart.cart.products }} )
+                cart.cart.save()
+                return {
+                    statusCode: 200, // o el código de estado que desees para "éxito"
+                    message: "Cart actualizado", // un mensaje de éxito apropiado
+                    cart: cart, // el carrito encontrado
+                };
             }
 
-        })
-        if (exist) {
-            await cartsModel.updateOne( {_id : cid}, {$set: { products : cart.products }} )
-        }
-
-
-        return;
-    }
+        }catch(error){
+            return {
+                statusCode: 500, // o el código de estado que desees para "error del servidor"
+                message: "Internal server error", // un mensaje de error de servidor apropiado
+                error: error, // opcional: puedes incluir el objeto de error si es relevante
+            };
+        }}
 
     // eliminar un producto del carrito
     async deleteProductFromCart(cid, pid){

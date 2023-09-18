@@ -33,32 +33,21 @@ router.get('/:cid',  async (req, res) => {
 
 // agregar un producto al carrito
 router.post('/:cid/product/:pid', passport.authenticate('jwt', {session: false}), rolesMiddlewareUser, async (req, res) => {
-    const idCart = req.params.cid;
-    const idProduct = req.params.pid;
-    console.log(idCart);
-    console.log(idProduct);
-    let result =  await cartController.addProductToCartController(idCart, idProduct)
+    let result =  await cartController.addProductToCartController(req)
     console.log(result);
     res.send(result)        
 })
 
 // actualizar carrito
 router.put('/:cid',  async (req, res) => {
-    const idCart = req.params.cid;
-    const products = req.body
-    console.log(idCart);
-    console.log(products);
-    await cartController.updateCartController(idCart, products)
-    res.send({status: 'success'})        
+    let result = await cartController.updateCartController(req)
+    res.send(result)        
 })
 
 // actualizar cantidad de producto en el carrito
 router.put('/:cid/product/:pid',  async (req, res) => {
-    const idCart = req.params.cid;
-    const idProduct = req.params.pid;
-    const quantity = req.body
-    await cartController.updateQuantityProductController(idCart, idProduct, quantity.quantity);
-    res.send({status: 'success'})        
+    let result = await cartController.updateQuantityProductController(req);
+    res.send(result)        
 })
 
 // eliminar un producto del carrito
