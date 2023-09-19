@@ -52,25 +52,23 @@ router.put('/:cid/product/:pid',  async (req, res) => {
 
 // eliminar un producto del carrito
 router.delete('/:cid/product/:pid', passport.authenticate('jwt', {session: false}), rolesMiddlewareUser,  async(req, res) => {
-    const idCart = req.params.cid;
-    const idProduct = req.params.pid
-    await cartController.deleteProductFromCartController(idCart, idProduct)
-    res.send({status: 'success'})
+    let result = await cartController.deleteProductFromCartController(req)
+    res.send(result)
 } )
 
 // eliminar todos los productos del carrito
 router.delete('/:cid', async(req, res) => {
     const idCart = req.params.cid;
-    await cartController.deleteAllProductsFromCartController(idCart)
-    res.send({status: 'success'})
+    let result = await cartController.deleteAllProductsFromCartController(req);
+    res.send(result)
 } )
 
 
 
 // finalizar el proceso de compra
 router.get('/:cid/purchase', passportCall('jwt'), async( req, res )=>{
-    await cartController.weekendShoppingController(req, res)
-    res.send({status: 'success'})
+    let result = await cartController.weekendShoppingController(req, res)
+    res.send(result)
 })
 
 export default router;

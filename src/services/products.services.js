@@ -22,7 +22,8 @@ export default class ProductServices {
 
     // ver un product
     async getProductServiceById( req) {
-        const result = await this.productDao.getProductById( req);
+        let id = req.params.pid
+        const result = await this.productDao.getProductById(id);
         return result;
     }    
     // añadir product

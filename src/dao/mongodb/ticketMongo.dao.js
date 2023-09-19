@@ -8,8 +8,28 @@ export default class TicketMananger {
 
     // creando ticket
     async addTk(tk){
-        let result = await ticketModel.create(tk);
-        return result
+        try{
+            let result = await ticketModel.create(tk);
+            if(!result){
+                return {
+                    statusCode: 404, // o el código de estado que desees para "no encontrado"
+                    message: "problema al crear TK", // un mensaje de error apropiado
+                    result: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
+                };
+            }
+            return {
+                statusCode: 200, // o el código de estado que desees para "no encontrado"
+                message: "se creo TK", // un mensaje de error apropiado
+                result: result, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
+            };
+        }catch(error){
+            return {
+                statusCode: 500, // o el código de estado que desees para "error del servidor"
+                message: "Internal server error", // un mensaje de error de servidor apropiado
+                error: error, // opcional: puedes incluir el objeto de error si es relevante
+            };
+        }
+        
     }
     /*
     async addTk(){

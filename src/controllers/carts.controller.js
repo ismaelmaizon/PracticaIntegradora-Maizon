@@ -64,28 +64,40 @@ export default class cartController {
     }
 
     // eliminar un producto del carrito
-    async deleteProductFromCartController(cid, pid){
-        if(!cid){
-            return { error:'id de carrito esta vacio' }
+    async deleteProductFromCartController(req){
+        const result = await this.cartController.deleteProductFromCartService(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        if(!pid){
-            return { error:'id de producto esta vacio' }
-        }
-        const result = await this.cartController.deleteProductFromCartService(cid, pid)
         return result;
-        
     }
     // eliminar todos los productos del carrito
-    async deleteAllProductsFromCartController(cid){
-        if(!cid){
-            return { error:'id de carrito esta vacio' }
+    async deleteAllProductsFromCartController(req){
+        const result = await this.cartController.deleteAllProductsFromCartService(req)
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
         }
-        const result = await this.cartController.deleteAllProductsFromCartService(cid)
         return result;
     }
     // finalizar el proceso de compra
     async weekendShoppingController(req, res){
         const result = await this.cartController.weekendShoppingService(req, res);
+        /*
+        if (result.statusCode === 200){
+            req.logger.debug(`${req.method} en api/carts${req.url} -- status: 200 -- ${new Date().toLocaleTimeString()}`);
+        }else if (result.statusCode == 404) {
+            req.logger.info(`${req.method} en api/carts${req.url} -- status: 404  -- ${new Date().toLocaleTimeString()}`);
+        }else{
+            req.logger.error(`${req.method} en api/carts${req.url} -- status: 500 -- ${new Date().toLocaleTimeString()}`);
+        }*/
         return result;
     }
 

@@ -25,8 +25,9 @@ export default class cartServices {
     // agregar un producto al carrito
     async addProductToCartService(req){
         let response = {}
+        let id = req.params.pid
         const result = await this.cartDao.getCartById(req);
-        const result1 = await this.productDao.getProductById(req);
+        const result1 = await this.productDao.getProductById(id);
         if(result.statusCode == 404 || result1.statusCode == 404) {
             response.statusCode = 404
             response.message = 'id card o id product no existe'
@@ -54,8 +55,9 @@ export default class cartServices {
     // actualizar cantidad de producto en el carrito
     async updateQuantityProductService(req){
         let response = {}
+        let id = req.params.pid
         const result = await this.cartDao.getCartById(req);
-        const result1 = await this.productDao.getProductById(req);
+        const result1 = await this.productDao.getProductById(id);
         if(result.statusCode == 404 || result1.statusCode == 404) {
             response.statusCode = 404
             response.message = 'id card o id product no existe'
@@ -73,13 +75,14 @@ export default class cartServices {
     }
 
     // eliminar un producto del carrito
-    async deleteProductFromCartService(cid, pid){
-        const result = await this.cartDao.deleteProductFromCart(cid, pid);
+    async deleteProductFromCartService(req){
+        const idProduct = req.params.pid
+        const result = await this.cartDao.deleteProductFromCart(req, idProduct);
         return result;
     }
     // eliminar todos los productos del carrito
-    async deleteAllProductsFromCartService(cid){
-        const result = await this.cartDao.deleteAllProductsFromCart(cid);
+    async deleteAllProductsFromCartService(req){
+        const result = await this.cartDao.deleteAllProductsFromCart(req);
         return result;
     }
 

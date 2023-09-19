@@ -38,20 +38,20 @@ export default class ProductManager {
     }
 
     // ver un producto
-    async getProductById(req){
-        let id = req.params.pid
+    async getProductById(pid){
+        let id = pid
         try{
             let result = await productsModel.findOne({_id : id});
             if (!result){
                 return {
                     statusCode: 404, // o el código de estado que desees para "no encontrado"
                     message: "Product not found", // un mensaje de error apropiado
-                    result: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
+                    product: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
                 };
             }
             return {
                 statusCode: 200, // o el código de estado que desees para "éxito"
-                message: "Cart found", // un mensaje de éxito apropiado
+                message: "Product found", // un mensaje de éxito apropiado
                 product: result, // el carrito encontrado
             };
         }catch(error){

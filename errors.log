@@ -19,3 +19,12 @@ error: GET en api/products/6501c2e2edc7f59e7452f -- status: 500 -- 17:14:59
 error: GET en api/carts/6501c2e2edc7f59e7452f -- status: 500 -- 17:15:58
 error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71ed -- status: 500 -- 11:29:14
 error: PUT en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71e -- status: 500 -- 15:51:49
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edc -- status: 500 -- 12:11:06
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edc -- status: 500 -- 12:13:50
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:16:48
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:25:24
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:25:40
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:41:31
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:45:02
+error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:45:55
+error: PUT en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 13:13:51
