@@ -28,3 +28,4 @@ error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71e
 error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:45:02
 error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:45:55
 error: PUT en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 13:13:51
+error: Logger - error

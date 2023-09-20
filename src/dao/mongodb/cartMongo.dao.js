@@ -3,11 +3,25 @@ import cartsModel from "./models/cart.model.js";
 import ProductManager from "./productMongo.dao.js";
 import TicketMananger from "./ticketMongo.dao.js";
 
+function generarCodigoNumerico() {
+    const longitud = 6; // Número de dígitos en el código
+    let codigo = '';
+    for (let i = 0; i < longitud; i++) {
+      const digito = Math.floor(Math.random() * 10); // Genera un número aleatorio entre 0 y 9
+    codigo += digito;
+    }
+    return codigo;
+}
+
+
+
 export default class CartManager {
     connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
     
     productManager = new ProductManager;
     ticketMananger = new TicketMananger;
+
+    
     
     // creando carrito
     async addCart(cart){
@@ -186,6 +200,7 @@ export default class CartManager {
             };
         }
     }
+    
     // eliminar todos los productos del carrito
     async deleteAllProductsFromCart(req){
         console.log(req.params.cid);
@@ -228,11 +243,7 @@ export default class CartManager {
                     message: "Cart not found", // un mensaje de error apropiado
                     cart: null, // opcional: puedes incluir el carrito encontrado o null si no se encuentra
                 }; 
-            } 
-            /*      
-            console.log('weekendShopping');
-            console.log(cart.products);
-            console.log(user);*/
+            }
             cart.cart.products.map( async (c) =>{
                 let stock = c.product.stock
                 let idProd = c.id            
@@ -241,18 +252,7 @@ export default class CartManager {
                 }else{
                     amount = amount + (c.product.price * c.quiantity)
                     let prod = await this.productManager.getProductById(c.product.id);
-                    /*
-                    console.log('product');
-                    console.log(prod.title);
-                    console.log(prod.stock);
-                    */
                     let newStock = prod.product.stock - c.quiantity
-                    
-                    /*
-                    console.log('newstock');
-                    console.log(newStock);
-                    */
-                    
                     prod.product = {
                         "title" : prod.product.title,
                         "description": prod.product.description,
@@ -268,24 +268,23 @@ export default class CartManager {
                 }
             })
             await cart.cart.save();
-            const data = new Date().toLocaleTimeString;
-            console.log(cart.cart.products[0]);
-            //console.log(cart.cart.products[1]);
-            //console.log(cart.cart.products[2]);
+            const data = new Date().toLocaleTimeString();
+            console.log(cart.cart.products);
             console.log(data);
             console.log(amount);
+            const codigoAleatorio = generarCodigoNumerico();
             const ticket = {
-                "code": '000000012',
+                "code": codigoAleatorio,
                 "fecha": data,
                 "products": cart.cart.products,
                 "amount": amount,
                 "purchaser": user.email
             }
             console.log(ticket);
-            /*
+            
             let tk = await this.ticketMananger.addTk(ticket);
             await this.deleteAllProductsFromCart(req); // luego de crear el TK se procede a eliminar los productos del carrito para que este quede liberado
-            return tk;*/
+            return tk;
         }catch(error){
             return {
                 statusCode: 500, // o el código de estado que desees para "error del servidor"
