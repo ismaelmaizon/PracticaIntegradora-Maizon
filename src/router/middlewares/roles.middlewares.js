@@ -8,7 +8,7 @@ export const rolesMiddlewareAdmin = ( req, res, next ) => {
 
 
 export const rolesMiddlewareUser = ( req, res, next ) => {
-    if( req.user.role === 'user' ){
+    if( req.user.role === 'user'|| req.user.role === 'premium'){
         next()
     }else{
         res.send({ error:' you don t access '})

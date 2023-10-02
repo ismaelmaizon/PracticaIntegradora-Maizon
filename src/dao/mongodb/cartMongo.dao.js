@@ -63,7 +63,9 @@ export default class CartManager {
     async addProductToCart(req){
         let response = {}
         let id = req.params.pid
+        let userEmail = req.user.email
         try{
+            
             const product = await this.productManager.getProductById(id);
             const cart = await this.getCartById(req);
             console.log(product.product);
@@ -71,7 +73,13 @@ export default class CartManager {
             let productos = cart.cart.products
             console.log(productos.length);
             let exist = false;
-            
+            if( userEmail == product.product.owner){
+                return {
+                    statusCode: 404, 
+                    message: "al ser premium, no puede agregar un producto creado por si mismo", 
+                    cart: null 
+                }
+            }
             if (productos.length === 0) {
                 console.log('primer if');
                 cart.cart.products.push({ product: product.product});
@@ -88,7 +96,7 @@ export default class CartManager {
                 })
                 if (exist) {
                     console.log(cart.cart.products);
-                    await cartsModel.updateOne( {_id : req.params.cid}, {$set: { products : cart.products }} )
+                    await cartsModel.updateOne( {_id : req.params.cid}, {$set: { products : cart.cart.products }} )
                     cart.cart.save()
                 }else{
                     cart.cart.products.push({ product: product.product});
