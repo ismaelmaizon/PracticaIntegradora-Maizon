@@ -29,3 +29,7 @@ error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71e
 error: POST en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 12:45:55
 error: PUT en api/carts/6501c2e2edc7f59e7452f2ee/product/649dcbddced4931906e71edf -- status: 500 -- 13:13:51
 error: Logger - error
+error: DELETE en api/products/650300432b3611f13680bb24 -- status: 500 -- 13:17:47
+error: DELETE en api/products/65026432596802ef0b5ab012 -- status: 500 -- 13:26:36
+error: DELETE en api/products/651aefb79ec3e7cf80ca43ae -- status: 500 -- 13:29:05
+error: DELETE en api/products/651aefb79ec3e7cf80ca43ae -- status: 500 -- 13:32:58

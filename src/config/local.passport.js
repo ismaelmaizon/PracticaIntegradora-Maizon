@@ -22,7 +22,7 @@ export const initializePassportLocal = () => {
             const cart = {
                             "products":[]
                         }
-            const { first_name, last_name, age, email, password} = req.body;
+            const { first_name, last_name, age, email, password, role} = req.body;
             try {   
                 let user = await userModel.findOne({email: username})
                 if(user) {
@@ -41,6 +41,7 @@ export const initializePassportLocal = () => {
                     email,
                     age,
                     password: password, //antes= password: createHash(password),
+                    role,
                     cart: newIdCart
                 }
                 const result = await userModel.create(newUser)

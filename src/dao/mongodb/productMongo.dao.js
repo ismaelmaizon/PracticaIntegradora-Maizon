@@ -66,6 +66,9 @@ export default class ProductManager {
     async addProduct(req){
         let response = {}
         const newProduct = req.body;
+        if(req.user.role === 'premium'){
+            newProduct.owner = req.user.email
+        }
         console.log(newProduct);
         try{
             let result = await productsModel.create(newProduct);

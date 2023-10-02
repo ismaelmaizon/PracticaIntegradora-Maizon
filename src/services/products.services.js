@@ -61,9 +61,10 @@ export default class ProductServices {
 
     // eliminar producto
     async deleteProductServicesById(req){
+        let id = req.params.pid
         let response = {}
         try{
-            let result = await this.productDao.getProductById(req)// se pasa en este caso el req dado que la funcion getproductById recibe un req y luego obtiene el ID
+            let result = await this.productDao.getProductById(id)// se pasa en este caso el req dado que la funcion getproductById recibe un req y luego obtiene el ID
             console.log(result);
             if(result.statusCode == 404){
                 response.statusCode = 404
@@ -71,8 +72,15 @@ export default class ProductServices {
                 response.product = null
                 return response
             }else{
-                let result1 = await this.productDao.deleteProduct(req)
-                return result1;
+                if( result.product.owner === req.user.role || result.product.owner === req.user.email ){
+                    let result1 = await this.productDao.deleteProduct(req)
+                    return result1;
+                }else{
+                    response.statusCode = 404
+                    response.message = 'no tiene permisos para eliminar el producto'
+                    response.product = null
+                    return response
+                }
             }
         }catch(error){
             console.log(error);
@@ -83,3 +91,14 @@ export default class ProductServices {
         }
     }
 }
+
+
+/*if( result.product.owner === 'admin' || result.product.owner === req.user.email ){
+                    let result1 = await this.productDao.deleteProduct(req)
+                    return result1;
+                }else{
+                    response.statusCode = 404
+                    response.message = 'no tiene permisos para eliminar el producto'
+                    response.product = null
+                    return response
+                }*/ 

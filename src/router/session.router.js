@@ -55,8 +55,9 @@ router.post("/resetPassword", async (req, res) => {
   const token = req.query.token;
   // Verificar el token
   jwt.verify(token, 'coderSecret', (err) => {
+    let result = {message: 'Token inválido o expirado', link: 'diriguese a localhost:8080/api/mail/sendMail'}
     if (err) {
-      return res.status(401).send('Token inválido o expirado');
+      return res.status(401).send(result);
     }
     // El token es válido, ahora puedes mostrar la página para cambiar la contraseña
   })

@@ -6,7 +6,7 @@ import jwt  from "jsonwebtoken";
 const router = Router();
 
 const generateResetPasswordToken = (userEmail) => {
-    const token = jwt.sign({ userEmail }, 'coderSecret', { expiresIn: '1h' }); // El token expira en 1 hora
+    const token = jwt.sign({ userEmail }, 'coderSecret', { expiresIn: '1m' }); // El token expira en 1 hora
     return token;
 };
 
@@ -31,7 +31,7 @@ router.get("/sendMail", async (req, res) => {
         const resetPasswordLink = `http://localhost:8080/resetPassword?token=${resetPasswordToken}`;
         let result = await transport.sendMail({
             from: "ismael.maizon1234@gmail.com",
-            to: "gaston.maizon.4757@gmail.com",
+            to: "ismael.maizon1234@gmail.com",
             subject: "correo test",
             html: `
             <div style='color:blue'>
