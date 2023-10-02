@@ -1,5 +1,6 @@
 import ProductServices from "../services/products.services.js";
 
+
 export default class ProductController {
     constructor() {
         this.productServices = new ProductServices(); 

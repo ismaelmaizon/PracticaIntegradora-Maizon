@@ -11,7 +11,7 @@ const stock= document.getElementById('stock')
 
 
 socket.on('productos', async (data) => {
-    console.log(data);
+    console.log(data.product[0]);
 
     // Limpiar el contenido existente antes de renderizar nuevos productos
     product.innerHTML = '';

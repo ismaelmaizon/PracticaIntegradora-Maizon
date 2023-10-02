@@ -4,28 +4,24 @@ import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
 
-
 import ProductManager from "./dao/mongodb/productMongo.dao.js";
 import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
-
 
 import routerProducts from "./router/products.router.js";
 import routerCarts from './router/carts.router.js';
 import viewsRouter from './router/views.router.js';
 import sessionRouter from "./router/session.router.js";
 import loggerRouter from "./router/loggerTest.router.js";
+import mails from "./helpers/mail.js";
 import handlebars from 'express-handlebars';
 import __dirname from "./utils.js";
 
 import {Server} from 'socket.io';
 //import messagesModel from "./dao/mongodb/models/messages.model.js.js";
-
-
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import { initializePassportJWT } from "./config/jwt.passport.js";
 import { initializePassportLocal } from "./config/local.passport.js";
-
 
 import { proceso } from "./config/config.js";
 import { addLogger } from "../logger.config.js";
@@ -127,3 +123,4 @@ app.use('/api/products', routerProducts)
 app.use('/api/carts', routerCarts)
 app.use('/api/sessions',sessionRouter)
 app.use('/api/loggerTest',loggerRouter)
+app.use('/api/mail', mails)

@@ -4,7 +4,7 @@ import { Command } from 'commander';
 export const proceso = () => {
     const command = new Command();
     
-    command.option('--mode <mode> ', 'modo en que se levantara la app', 'dev')//'env'
+    command.option('--mode <mode> ', 'modo en que se levantara la app', 'env')//'env'
     command.parse();
     
     
