@@ -1,4 +1,4 @@
-import UsersServices from "../services/user.services";
+import UsersServices from "../services/user.services.js";
 
 export default class UsersController {
 
@@ -7,28 +7,28 @@ export default class UsersController {
     }
     
     //crear usuario
-    async createUser(user){
-        let result = await userModel.create(user)
+    async createUser(req){
+        let result = this.userServices.createUser(req)
         return result
     };
     //ver usuarios
     async getUsers(){
-        let result = await userModel.find()
+        let result = this.userServices.getUsers()
         return result
     }
-    //ver usuario
-    async getUsers(id){
-        let result = await userModel.findOne({ _id: id })
+    //ver un usuario
+    async getUser(req){
+        let result = this.userServices.getUser(req)
         return result
     }
-    //actualizar usuario
-    async updateUser(id, user){
-        let result = await userModel.updateOne({ _id: id}, {$set: user})
+    //actualizar usuario premium
+    async updateUser(req){
+        let result = this.userServices.updateUser(req)        
         return  result
     }
     //eliminar usuario
-    async deleteUser(id){
-        let result = await userModel.deleteOne({ _id: id })
+    async deleteUser(req){
+        let result = this.userServices.deleteUser(req)
         return result
     }
 }

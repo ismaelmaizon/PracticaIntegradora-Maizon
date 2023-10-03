@@ -1,4 +1,4 @@
-import userModel from "./models/Users.model";
+import userModel from "./models/Users.model.js";
 
 export default class UsersManager {
     
@@ -13,14 +13,21 @@ export default class UsersManager {
         return result
     }
     //ver usuario
-    async getUsers(id){
+    async getUser(id){
         let result = await userModel.findOne({ _id: id })
         return result
     }
     //actualizar usuario
     async updateUser(id, user){
-        let result = await userModel.updateOne({ _id: id}, {$set: user})
-        return  result
+        try{
+            let result = await userModel.updateOne({ _id: id}, {$set: user})
+            return  {
+                statusCode: 200,
+                message: 'usuario paso a premium',
+                response: result
+            }
+
+        }catch(error){}       
     }
     //eliminar usuario
     async deleteUser(id){

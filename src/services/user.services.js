@@ -7,28 +7,37 @@ export default class UsersServices {
     }
     
     //crear usuario
-    async createUser(user){
-        let result = await userModel.create(user)
+    async createUser(req){
+        let result = this.userDao.createUser(user);
         return result
     };
     //ver usuarios
     async getUsers(){
-        let result = await userModel.find()
+        let result = this.userDao.getUsers();
         return result
     }
     //ver usuario
-    async getUsers(id){
-        let result = await userModel.findOne({ _id: id })
+    async getUser(req){
+        const id = req.params.uid
+        let result = this.userDao.getUser()
         return result
     }
-    //actualizar usuario
-    async updateUser(id, user){
-        let result = await userModel.updateOne({ _id: id}, {$set: user})
+    //actualizar usuario premium
+    async updateUser(req){
+        const id = req.params.uid
+        console.log(id);
+        const user = await this.userDao.getUser(id)
+        console.log(user);
+        if ( user.role === 'user'){
+            user.role = 'premium'
+        }
+        let result = this.userDao.updateUser(id, user)
         return  result
     }
     //eliminar usuario
-    async deleteUser(id){
-        let result = await userModel.deleteOne({ _id: id })
+    async deleteUser(req){
+        const id = req.params.uid
+        let result = this.userDao.deleteUser(id)
         return result
     }
 }

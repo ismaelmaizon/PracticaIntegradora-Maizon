@@ -12,6 +12,7 @@ import routerCarts from './router/carts.router.js';
 import viewsRouter from './router/views.router.js';
 import sessionRouter from "./router/session.router.js";
 import loggerRouter from "./router/loggerTest.router.js";
+import user from "./router/user.router.js";
 import mails from "./helpers/mail.js";
 import handlebars from 'express-handlebars';
 import __dirname from "./utils.js";
@@ -124,3 +125,4 @@ app.use('/api/carts', routerCarts)
 app.use('/api/sessions',sessionRouter)
 app.use('/api/loggerTest',loggerRouter)
 app.use('/api/mail', mails)
+app.use('/api/users', user)
