@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import cartsModel from "./models/cart.model.js";
 import ProductManager from "./productMongo.dao.js";
 import TicketMananger from "./ticketMongo.dao.js";
@@ -16,7 +15,6 @@ function generarCodigoNumerico() {
 
 
 export default class CartManager {
-    connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
     
     productManager = new ProductManager;
     ticketMananger = new TicketMananger;

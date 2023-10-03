@@ -1,4 +1,3 @@
-import { response } from 'express';
 import ProductDao from '../dao/mongodb/productMongo.dao.js'
 
 
