@@ -28,6 +28,10 @@ import { proceso } from "./config/config.js";
 import { addLogger } from "../logger.config.js";
 import { rolesMiddlewareUser } from "./router/middlewares/roles.middlewares.js";
 
+//document
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+
 
 const app = express();
 
@@ -74,14 +78,10 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
 
 
-
-
 //servidor
 const httpServer = app.listen( process.env.PORT, () => {console.log('servidor escuchando');})
 
-
 const io = new Server (httpServer)
-
 
 io.on('connection', async (socket) => {
     
@@ -116,6 +116,22 @@ io.on('connection', async (socket) => {
     socket.emit('productos', prod.docs)
     
 })
+
+//document
+
+const swaggerOptions = {
+    definition:{
+        openapi: '3.0.1',
+        info:{
+            title: 'documentacion Proyecto',
+            description: 'documentacion de prueba del proyecto final de Coder'
+        }
+    },
+    apis: [`${__dirname}/docs/**/*.yaml`]
+}
+
+const specs = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
 
 // rutas
