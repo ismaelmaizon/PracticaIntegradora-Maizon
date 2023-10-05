@@ -130,8 +130,8 @@ const swaggerOptions = {
     apis: [`${__dirname}/docs/**/*.yaml`]
 }
 
-const specs = swaggerJSDoc(swaggerOptions)
-app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+const spec = swaggerJSDoc(swaggerOptions)
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(spec))
 
 
 // rutas

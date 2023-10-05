@@ -1,0 +1,61 @@
+paths:
+  /api/carts:
+    get:
+      summary: obtener todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: devuelve los Productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+
+
+components:
+  schemas:
+    carts:
+      type: object
+      properties:
+        _id: 
+          type: ObjectId
+          description: id autogenerado por mongo
+        title: 
+          type: String
+          description: nombre del Producto
+        description: 
+          type: String
+          description: informacion del producto
+        code: 
+          type: Number
+          description: codigo de referencia creado por usuario
+        price: 
+          type: Number
+          description: precio total del producto
+        status:
+          type: Boolean
+          description: nos informa si el producto esta disponible o no
+        stock:
+          type: Number
+          description: cantidad de producto en el deposito
+        category:
+          type: String
+          description: categoria del producto
+        owner:
+          type: String
+          description: informacion del creador del producto
+      example:
+        _id: ObjectId("4562318420369")
+        title: heladera
+        description: philco medida standar rendimineto A+
+        code: 123496
+        price: 256.245
+        status: true
+        stock:  50
+        category: 1 
+        owner: admin/ isma@gmail.com
