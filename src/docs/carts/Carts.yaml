@@ -15,6 +15,196 @@ paths:
                   $ref: '#components/schemas/carts'
         "500":
           description: "hubo un error"
+  /api/carts/{cid}:
+    get:
+      summary: ver un Carrito
+      tags:
+        - Carts
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      responses:
+        "200":
+          description: devuelve un Carrito segun su ID
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+  /api/carts/:
+    post:
+      summary: crear un Carrito
+      tags:
+        - Carts
+      requestBody:
+        require: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/createCart"
+      responses:
+        "200":
+          description: creacion de carrito nuevo, correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+  /api/carts/{cartid}/product/{productid}:
+    post:
+      summary: Agregar un producto al carrito
+      tags:
+        - Carts
+      parameters:
+      - name: cartid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      - name: productid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el producto a agregar'
+        schema:
+          type: String
+      responses:
+        "200":
+          description: se agrego producto de forma correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+  /api/carts/{id}:
+    put:
+      summary: actualizar un Carrito
+      tags:
+        - Carts
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      requestBody:
+        require: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/createCart"
+      responses:
+        "200":
+          description: Carrito se actualizo correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+  /api/carts/{carid}/product/{prodid}:
+    put:
+      summary: actualizar cantidad de producto especifico en el carrito
+      tags:
+        - Carts
+      parameters:
+      - name: carid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      - name: prodid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el producto a Actualizar'
+        schema:
+          type: String
+      requestBody:
+        require: true
+        content:
+          application/json:
+            schema:
+              $ref: "#components/schemas/quantity"
+      responses:
+        "200":
+          description: se actualizo cantidad de producto de forma correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
+  /api/carts/{caid}/product/{proid}:
+    delete:
+      summary: actualizar cantidad de producto especifico en el carrito
+      tags:
+        - Carts
+      parameters:
+      - name: caid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      - name: proid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el producto a Eliminar'
+        schema:
+          type: String
+      responses:
+        "200":
+          description: se elimino de producto de forma correcta
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/quantity'
+        "500":
+          description: "hubo un error"
+  /api/carts/{caid}:
+    delete:
+      summary: Vaciar carrito
+      tags:
+        - Carts
+      parameters:
+      - name: caid
+        in: path
+        required: true
+        description: 'parametro de ruta para identificar el carrito'
+        schema:
+          type: String
+      responses:
+        "200":
+          description: carrito quedo vacio
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/carts'
+        "500":
+          description: "hubo un error"
 
 
 components:
@@ -25,37 +215,21 @@ components:
         _id: 
           type: ObjectId
           description: id autogenerado por mongo
-        title: 
-          type: String
-          description: nombre del Producto
-        description: 
-          type: String
-          description: informacion del producto
-        code: 
-          type: Number
-          description: codigo de referencia creado por usuario
-        price: 
-          type: Number
-          description: precio total del producto
-        status:
-          type: Boolean
-          description: nos informa si el producto esta disponible o no
-        stock:
-          type: Number
-          description: cantidad de producto en el deposito
-        category:
-          type: String
-          description: categoria del producto
-        owner:
-          type: String
-          description: informacion del creador del producto
+        products: 
+          type: Array
+          description: Array de productos agregados al carrito correspondiente
       example:
         _id: ObjectId("4562318420369")
-        title: heladera
-        description: philco medida standar rendimineto A+
-        code: 123496
-        price: 256.245
-        status: true
-        stock:  50
-        category: 1 
-        owner: admin/ isma@gmail.com
+        products: Array
+    createCart:
+      type: object
+      properties:
+        products:
+          type: ObjectId
+          description: id creado en mongoDB
+    quantity:
+      type: object
+      properties:
+        quantity:
+          type: Number
+          description: Numero que actualiza la cantidad de producto en el carrito

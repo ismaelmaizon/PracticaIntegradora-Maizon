@@ -12,12 +12,7 @@ const router = Router();
 let cartManager = new CartManager
 let cartController = new CartController
 
-// creando carrito
-router.post('/', async (req, res) => {
-    const cart = req.body
-    await cartController.addCartController(cart);
-    res.send({status: 'carrito creado'})
-})
+
 
 router.get('/',  async (req, res) => {
     const carts = await cartManager.getCarts();
@@ -29,6 +24,13 @@ router.get('/',  async (req, res) => {
 router.get('/:cid',  async (req, res) => {
     const result = await cartController.getCartControllerById(req);
     res.send(result)
+})
+
+// creando carrito
+router.post('/', async (req, res) => {
+    const cart = req.body
+    await cartController.addCartController(cart);
+    res.send({status: 'carrito creado'})
 })
 
 // agregar un producto al carrito
