@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UsersController from "../controllers/user.controller.js";
+import { uploader } from "../multer.js";
 
 
 const router = Router();
@@ -21,9 +22,18 @@ router.get('/', async(req, res) =>{
 
 // ver un usuario
 router.get('/:uid', async(req, res) =>{
+    console.log(req.params.uid);
     let result = await userController.getUser(req);
+    console.log(result);
     res.send(result)
 })
+
+// agregar document
+router.post('/:uid/document', uploader.single() ,async(req, res) =>{
+    let result = await userController.postDocumento(req)
+    res.send(result)
+})
+
 
 //actualizar usuario premium
 router.put('/premium/:uid', async(req, res) =>{

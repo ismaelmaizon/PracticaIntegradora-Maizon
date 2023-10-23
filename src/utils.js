@@ -4,6 +4,8 @@ import bcrypt from 'bcrypt';
 import passport from "passport";
 
 
+
+
 //Manejo de errores con passport
 export const passportCall = (strategy) => {
     return async(req, res, next) => {

@@ -13,7 +13,7 @@ let cartManager = new CartManager
 let cartController = new CartController
 
 
-
+// ver todos los carritos
 router.get('/',  async (req, res) => {
     const carts = await cartManager.getCarts();
     res.send(carts)
