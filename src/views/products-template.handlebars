@@ -7,13 +7,16 @@
         <p>{{user.email}}</p>
         <p>{{user.age}}</p>
         <p>{{user.role}}</p>
-        <a href="/api/sessions/current"><button>Infor del usuario</button></a>
+        <a href="/api/sessions/current"><button>Info del usuario</button></a>
         <a href="/api/sessions/logout"><button>Salir</button></a>   
     </div>
     <div id="cart">
         <div id="product" style="padding: 10px 10px"> </div>
     </div>
+    <div id="lista-productos">
+        <h2>{{nombre}}</h2>
+        <p>Precio: ${{precio}}</p>
+    </div>
 </div>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/socket.io/socket.io.js"></script>
 <script src="./js/products.js"></script>

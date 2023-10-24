@@ -48,4 +48,9 @@ export default class UsersController {
         let result = this.userServices.deleteUser(req)
         return result
     }
+    //eliminar usuarios por inactividad
+    async deleteInactividad(){
+        let result = this.userServices.deleteInactividad()
+        return result
+    }
 }

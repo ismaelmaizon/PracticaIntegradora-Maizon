@@ -71,7 +71,7 @@ export default class ProductServices {
                 response.product = null
                 return response
             }else{
-                if( result.product.owner === req.user.role || result.product.owner === req.user.email ){
+                if( req.user.role === 'admin' || result.product.owner === req.user.email ){
                     let result1 = await this.productDao.deleteProduct(req)
                     return result1;
                 }else{

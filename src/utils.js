@@ -2,7 +2,48 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import bcrypt from 'bcrypt';
 import passport from "passport";
+import nodemailer from "nodemailer";
 
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    auth: {
+      user: "ismael.maizon1234@gmail.com",
+      pass: "ostqktqhmyibrcmk",
+    },
+});
+
+export const EliminacionUser = async (email) => {
+    let result = await transport.sendMail({
+        from: "ismael.maizon1234@gmail.com",
+        to: `${email}`,
+        subject: "correo test",
+        html: `
+        <div style='color:blue'>
+            <h1>test</h1>
+            <h2>Eliminacion usuario</h2>
+            <h3> te informamos que su usuario se elimino por inactividad</h3>
+        </div>`,
+        attachments: []
+    });
+
+    return result
+}
+
+
+//funcion fecha de login  o register
+export const FechaDeHoy= () => {
+    const fechaHoy = new Date();
+    const dia = fechaHoy.getDate();
+    const mes = fechaHoy.getMonth() + 1; // Los meses se cuentan desde 0, por lo que sumamos 1.
+    const año = fechaHoy.getFullYear(); // Los meses se cuentan desde 0, por lo que sumamos 1.
+  
+    // Formatea la fecha como una cadena "dd/mm/aaaa" (puedes ajustar el formato según tus preferencias).
+    const fechaFormateada = `${dia}-${mes}-${año}`;
+  
+    return fechaFormateada;
+}
 
 
 

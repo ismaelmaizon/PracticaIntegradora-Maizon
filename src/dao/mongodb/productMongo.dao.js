@@ -1,4 +1,15 @@
 import productsModel from "./models/product.model.js";
+import nodemailer from "nodemailer";
+
+
+const transport = nodemailer.createTransport({
+    service: "gmail",
+    port: 587,
+    auth: {
+      user: "ismael.maizon1234@gmail.com",
+      pass: "ostqktqhmyibrcmk",
+    },
+});
 
 export default class ProductManager {
 
@@ -110,6 +121,27 @@ export default class ProductManager {
         const pid = req.params.pid;
         let response = {}
         try{
+            let product = await this.getProductById(pid)
+            let usuario = product.product.owner
+            if (product.owner != 'admin'){
+                await transport.sendMail({
+                    from: "ismael.maizon1234@gmail.com",
+                    to: `${usuario}`,
+                    subject: "correo test",
+                    html: `
+                    <div style='color:blue'>
+                        <h1>test</h1>
+                        <h2>Eliminacion de tu porducto</h2>
+                        <h3> te informamos que se elimino tu prodcto </h3>
+                    </div>`,
+                    attachments: []
+                });
+                let result1 = await productsModel.deleteOne({_id : pid});
+                response.statusCode = 200;
+                response.message = 'producto eliminado';
+                response.result = result1
+                return response
+            }
             let result = await productsModel.deleteOne({_id : pid});
             response.statusCode = 200;
             response.message = 'producto eliminado';

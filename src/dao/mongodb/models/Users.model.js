@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import { FechaDeHoy } from '../../../utils.js'
 
 const collection = 'users1'
-
+/*
 function FechaDeHoy() {
     const fechaHoy = new Date();
     const dia = fechaHoy.getDate();
@@ -16,6 +17,9 @@ function FechaDeHoy() {
   
 // Llama a la función para obtener la fecha de hoy.
 const fechaHoy = FechaDeHoy();
+*/
+
+let fechaHoy = FechaDeHoy();
 
 const schema = new mongoose.Schema({
     first_name:String,

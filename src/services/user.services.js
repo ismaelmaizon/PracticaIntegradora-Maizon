@@ -65,4 +65,10 @@ export default class UsersServices {
         let result = this.userDao.deleteUser(id)
         return result
     }
+
+    //eliminar usuarios por inactividad
+    async deleteInactividad(){
+        let result = this.userDao.deleteInactividad()
+        return result
+    }
 }

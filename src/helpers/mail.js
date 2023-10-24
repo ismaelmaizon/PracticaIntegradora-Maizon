@@ -20,7 +20,6 @@ const transport = nodemailer.createTransport({
 });
 
 router.get("/sendMail", async (req, res) => {
-
     const emailUser = req.body.email;
     console.log(emailUser);
     const user = await userModel.findOne({ email: emailUser})

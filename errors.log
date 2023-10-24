@@ -33,3 +33,12 @@ error: DELETE en api/products/650300432b3611f13680bb24 -- status: 500 -- 13:17:4
 error: DELETE en api/products/65026432596802ef0b5ab012 -- status: 500 -- 13:26:36
 error: DELETE en api/products/651aefb79ec3e7cf80ca43ae -- status: 500 -- 13:29:05
 error: DELETE en api/products/651aefb79ec3e7cf80ca43ae -- status: 500 -- 13:32:58
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:21:31
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:22:16
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:30:49
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:35:21
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:45:54
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:47:43
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:51:47
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:52:13
+error: DELETE en api/products/6537d2d33b31b76166602a25 -- status: 500 -- 11:52:53

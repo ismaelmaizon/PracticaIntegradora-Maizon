@@ -1,5 +1,13 @@
-export const rolesMiddlewareAdmin = ( req, res, next ) => {
+export const rolesMiddlewareAdminAndPremium = ( req, res, next ) => {
     if( req.user.role === 'admin' || req.user.role === 'premium'){
+        next()
+    }else{
+        res.send({ error:' you don t access '})
+    }
+};
+
+export const rolesMiddlewareAdmin = ( req, res, next ) => {
+    if( req.user.role === 'admin'){
         next()
     }else{
         res.send({ error:' you don t access '})

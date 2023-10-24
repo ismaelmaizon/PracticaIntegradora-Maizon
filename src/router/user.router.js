@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UsersController from "../controllers/user.controller.js";
 import { uploader } from "../multer.js";
+import { rolesMiddlewareAdmin } from "./middlewares/roles.middlewares.js";
 
 
 const router = Router();
@@ -15,13 +16,13 @@ router.post('/', async(req, res) => {
 
 
 //ver usuarios
-router.get('/', async(req, res) =>{
+router.get('/', rolesMiddlewareAdmin, async(req, res) =>{
     let result = await userController.getUsers();
     res.send(result)
 })
 
 // ver un usuario
-router.get('/:uid', async(req, res) =>{
+router.get('/:uid', rolesMiddlewareAdmin ,async(req, res) =>{
     console.log(req.params.uid);
     let result = await userController.getUser(req);
     console.log(result);
@@ -43,10 +44,15 @@ router.put('/premium/:uid', async(req, res) =>{
 
 
  //eliminar usuario
-router.delete('/:uid', async(req, res)=>{
+router.delete('/:uid', rolesMiddlewareAdmin ,  async(req, res)=>{
     let result = await userController.deleteUser(req);
     res.send(result)
 })
 
+//eliminar usuarios por inactividad
+router.delete('/', rolesMiddlewareAdmin, async(req, res) => {
+    let result = await userController.deleteInactividad()
+    res.send(result)
+})
 
 export default router

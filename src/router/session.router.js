@@ -2,11 +2,12 @@ import { Router } from "express";
 import userModel from "../dao/mongodb/models/Users.model.js";
 import passport from "passport";
 import jwt from 'jsonwebtoken';
-import { passportCall, validatePassword } from "../utils.js";
+import { passportCall, validatePassword, FechaDeHoy } from "../utils.js";
 import sessionController from "../controllers/session.controller.js";
 
 
 const router = Router();
+
 
 // Registrarse
 router.post("/register", passport.authenticate('register', {session: false}), async (req, res) => {
@@ -25,20 +26,25 @@ router.post("/login", passport.authenticate('login', {session: false}), async (r
   if(user == null) {
     res.send({ message: 'clave o usuario incorrecto'})
   }else{
-  req.session.user = {
-    name: user.first_name + user.last_name,
-    email: user.email,
-    age: user.age,
-    role: user.role,
-  };
-  let email = user.email
-  let role = user.role
-  let password = user.password
-  console.log('***********');
-  console.log(req.session);
-  
-  let token = jwt.sign({email, password, role }, 'coderSecret', {expiresIn: "24h"}); // " 'coderSecret' " FIRMA DEL TOKEN
-  res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success"})} // "{httpOnly: false}" al estar en false nos permite poder ver la cookie en consola
+    user.last_connection = FechaDeHoy()
+    console.log(user);
+    await userModel.updateOne({ _id: user.id}, {$set: user})
+      
+    req.session.user = {
+      name: user.first_name + user.last_name,
+      email: user.email,
+      age: user.age,
+      role: user.role,
+    };
+    let email = user.email
+    let role = user.role
+    let password = user.password
+    console.log('***********');
+    console.log(req.session);
+    
+    let token = jwt.sign({email, password, role }, 'coderSecret', {expiresIn: "24h"}); // " 'coderSecret' " FIRMA DEL TOKEN
+    res.cookie('coderCookie', token, {httpOnly: true}).send({ status: "success"})
+  } // "{httpOnly: false}" al estar en false nos permite poder ver la cookie en consola
   // " 'coderCookie' " NOMBRE DE LA COOKIE QUE ESTAMOS GUARDANDO
 
 });

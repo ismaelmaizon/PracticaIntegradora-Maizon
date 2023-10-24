@@ -4,8 +4,8 @@ import MongoStore from "connect-mongo";
 import mongoose from "mongoose";
 import __dirnmae from "./utils.js";
 
-import ProductManager from "./dao/mongodb/productMongo.dao.js";
-import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
+//import ProductManager from "./dao/mongodb/productMongo.dao.js";
+//import MessagesMananger from "./dao/mongodb/messagesMananger.class.js";
 
 import routerProducts from "./router/products.router.js";
 import routerCarts from './router/carts.router.js';
@@ -17,7 +17,7 @@ import mails from "./helpers/mail.js";
 import handlebars from 'express-handlebars';
 import __dirname from "./utils.js";
 
-import {Server} from 'socket.io';
+//import {Server} from 'socket.io';
 //import messagesModel from "./dao/mongodb/models/messages.model.js.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
@@ -26,7 +26,7 @@ import { initializePassportLocal } from "./config/local.passport.js";
 
 import { proceso } from "./config/config.js";
 import { addLogger } from "../logger.config.js";
-import { rolesMiddlewareUser } from "./router/middlewares/roles.middlewares.js";
+//import { rolesMiddlewareUser } from "./router/middlewares/roles.middlewares.js";
 
 //document
 import swaggerJSDoc from "swagger-jsdoc";
@@ -81,6 +81,8 @@ app.set('view engine', 'handlebars');
 //servidor
 const httpServer = app.listen( process.env.PORT, () => {console.log('servidor escuchando');})
 
+
+/*
 const io = new Server (httpServer)
 
 io.on('connection', async (socket) => {
@@ -112,10 +114,11 @@ io.on('connection', async (socket) => {
     })
 
     let prod = await productManager.getProduct(20, 1, 1);
-    console.log(prod);
-    socket.emit('productos', prod.docs)
+    console.log('server.js');
+    console.log(prod.product);
+    socket.emit('productos', prod.product)
     
-})
+})*/
 
 //document
 
