@@ -34,12 +34,8 @@ import swaggerUiExpress from "swagger-ui-express";
 
 
 const app = express();
-
 // conexion con base de datos
-const connection = mongoose.connect(
-    "mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
-    //{ useNewUrlParser: true, useUnifiedTopology: true } 
-);
+const connection = mongoose.connect('mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority');
 
 
 
@@ -63,7 +59,7 @@ app.use(addLogger)
 app.use(
     session({
         store: new MongoStore({
-        mongoUrl:"mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority",
+        mongoUrl:'mongodb+srv://ismaelmaizon1234:Qbroncon18@cluster0.6inkifa.mongodb.net/?retryWrites=true&w=majority',
         // ttl: 20,  (time to live) tiempo de expracion de la session
         }),
         secret: "mongoSecret",
@@ -79,7 +75,7 @@ app.set('view engine', 'handlebars');
 
 
 //servidor
-const httpServer = app.listen( process.env.PORT, () => {console.log('servidor escuchando');})
+app.listen( process.env.PORT, () => {console.log('servidor escuchando');})
 
 
 /*

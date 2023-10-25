@@ -1,7 +1,7 @@
 import { Router } from "express";
 import UsersController from "../controllers/user.controller.js";
 import { uploader } from "../multer.js";
-import { rolesMiddlewareAdmin } from "./middlewares/roles.middlewares.js";
+import { rolesMiddlewareAdmin, rolesMiddlewareAdminAndPremium } from "./middlewares/roles.middlewares.js";
 
 
 const router = Router();

@@ -1,9 +1,8 @@
 import { Router } from "express"; 
 import passport from "passport";
 import userModel from "../dao/mongodb/models/Users.model.js";
-
+import productsModel from "../dao/mongodb/models/product.model.js";
 const routes = Router();
-
 
 routes.get('/chat', (req, res) => {
     let r = req.body
@@ -21,16 +20,18 @@ routes.get('/login', (req, res) => {
 })
 
 // 
-routes.get('/profile', passport.authenticate('jwt', {session: false}), async (req, res) => {
+routes.get('/products', passport.authenticate('jwt', {session: false}), async (req, res) => {
     const userEmail = req.session.user
     console.log(userEmail);
     console.log(userEmail.email);
     let user = await userModel.findOne({email: userEmail.email})
     console.log(user);
+    let products = await productsModel.find();
+    console.log(products);
 
     if (user.role == 'admin') {
         res.render('products-template', {
-            user: req.session.user
+            productos: products
         })
     }else {
         res.render('profile', {

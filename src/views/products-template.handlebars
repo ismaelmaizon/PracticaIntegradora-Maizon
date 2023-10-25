@@ -1,22 +1,5 @@
-<link rel="" type="text/css" href="../public/css/products.css">
-<div  >
-    <h1 style="color: red" >hola {{user.name}} </h1>
-    <div>
-        <h1>Tu perfil (sin datos sensibles)</h1>
-        <p>{{user.name}}</p>
-        <p>{{user.email}}</p>
-        <p>{{user.age}}</p>
-        <p>{{user.role}}</p>
-        <a href="/api/sessions/current"><button>Info del usuario</button></a>
-        <a href="/api/sessions/logout"><button>Salir</button></a>   
-    </div>
-    <div id="cart">
-        <div id="product" style="padding: 10px 10px"> </div>
-    </div>
-    <div id="lista-productos">
-        <h2>{{nombre}}</h2>
-        <p>Precio: ${{precio}}</p>
-    </div>
-</div>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="./js/products.js"></script>
+<h1>hola</h1>
+{{#each productos}}
+    <h2>{{productos.title}}</h2>
+    <p>Precio: ${{productos.price}}</p>
+{{/each}}
